@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/10/29 11:49:15 by afokin            #+#    #+#             */
+/*   Updated: 2017/10/29 11:49:18 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+char	*ft_strchr(char *s, char c)
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+	int i;
 
-#endif
+	i = -1;
+	while (s[++i] || (s[i] == c))
+		if (s[i] == c)
+			return (s + i);
+	return (0);
+}

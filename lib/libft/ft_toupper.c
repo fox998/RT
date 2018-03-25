@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/10/30 13:55:57 by afokin            #+#    #+#             */
+/*   Updated: 2017/10/30 13:55:59 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+int		ft_toupper(int c)
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
-
-#endif
+	if (c >= 'a' && c <= 'z')
+		return (c - 'a' + 'A');
+	return (c);
+}

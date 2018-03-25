@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/11/05 17:56:08 by afokin            #+#    #+#             */
+/*   Updated: 2017/11/05 17:56:10 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+void	ft_swap(void *p1, void *p2, size_t len)
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+	unsigned char	*ptr1;
+	unsigned char	*ptr2;
+	unsigned char	tmp;
+	size_t			i;
 
-#endif
+	i = 0;
+	ptr1 = (unsigned char *)p1;
+	ptr2 = (unsigned char *)p2;
+	while (++i <= len)
+	{
+		tmp = *ptr1;
+		*ptr1 = *ptr2;
+		*ptr2 = tmp;
+		ptr1++;
+		ptr2++;
+	}
+}

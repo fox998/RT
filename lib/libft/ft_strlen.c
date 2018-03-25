@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/10/28 16:04:40 by afokin            #+#    #+#             */
+/*   Updated: 2017/10/28 16:04:42 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+size_t	ft_strlen(char *str)
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+	int i;
 
-#endif
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}

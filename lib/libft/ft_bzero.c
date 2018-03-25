@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/10/26 21:00:04 by afokin            #+#    #+#             */
+/*   Updated: 2017/10/26 21:00:08 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+void	ft_bzero(void *s, size_t n)
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+	char	*p;
+	int		i;
 
-#endif
+	p = s;
+	i = -1;
+	while ((size_t)++i < n)
+		p[i] = 0;
+}

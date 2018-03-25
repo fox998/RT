@@ -1,23 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_strmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:17 by afokin           ###   ########.fr       */
+/*   Created: 2017/10/30 15:48:06 by afokin            #+#    #+#             */
+/*   Updated: 2017/10/30 15:48:10 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-struct	s_scene
+char	*ft_strmap(char const *s, char (*f)(char))
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}		t_scene;
+	int		lens;
+	int		i;
+	char	*ptr;
+	char	*iptr;
+	char	c;
 
-#endif
+	if (s == 0)
+		return (0);
+	lens = ft_strlen((char *)s);
+	i = 0;
+	if (!(ptr = malloc(lens + 1)))
+		return (0);
+	iptr = ptr;
+	while (s[i])
+	{
+		if ((c = f(s[i])))
+		{
+			*iptr = c;
+			iptr++;
+		}
+		i++;
+	}
+	*iptr = 0;
+	return (ptr);
+}

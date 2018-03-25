@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/10/30 15:41:21 by afokin            #+#    #+#             */
+/*   Updated: 2017/10/30 15:41:23 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+	int i;
 
-#endif
+	i = 0;
+	if (s && f)
+		while (s[i])
+		{
+			f(i, s + i);
+			i++;
+		}
+}

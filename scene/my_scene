@@ -4,3 +4,9 @@ camera
 	rot = (0, 0, 0);
 }
 
+window
+{
+	graphics_quality = 1;
+	window_h = 800;
+	window_w = 400;
+}

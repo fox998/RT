@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/10/30 17:20:27 by afokin            #+#    #+#             */
+/*   Updated: 2017/10/30 17:20:29 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+	int		s1len;
+	int		s2len;
+	char	*ptr;
+	int		i;
 
-#endif
+	if (!s1 || !s2)
+		return (0);
+	i = 0;
+	s1len = ft_strlen((char *)s1);
+	s2len = ft_strlen((char *)s2);
+	if (!(ptr = malloc(s1len + s2len + 1)))
+		return (0);
+	while ((ptr[i] = s1[i]))
+		i++;
+	i = 0;
+	while ((ptr[s1len + i] = s2[i]))
+		i++;
+	return (ptr);
+}

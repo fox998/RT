@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_strnequ.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/10/30 16:46:37 by afokin            #+#    #+#             */
+/*   Updated: 2017/10/30 16:46:38 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+int		ft_strnequ(char const *s1, char const *s2, size_t n)
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
-
-#endif
+	if (s1 && s2)
+		if (!ft_strncmp((char *)s1, (char *)s2, n))
+			return (1);
+	return (0);
+}

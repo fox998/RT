@@ -1,23 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/10/26 21:59:13 by afokin            #+#    #+#             */
+/*   Updated: 2017/10/26 21:59:36 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+	char		*pdst;
+	char		*psrc;
+	int			i;
 
-#endif
+	pdst = (char *)dst;
+	psrc = (char *)src;
+	if (dst - src < 0)
+	{
+		i = -1;
+		while (++i < (int)len)
+			pdst[i] = psrc[i];
+	}
+	else if (src != dst)
+	{
+		i = len;
+		while (--i > -1)
+			pdst[i] = psrc[i];
+	}
+	return (dst);
+}

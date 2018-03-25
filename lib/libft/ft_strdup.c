@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/10/28 16:12:14 by afokin            #+#    #+#             */
+/*   Updated: 2017/10/28 16:12:15 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+char	*ft_strdup(char *str)
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+	char	*tmp;
+	int		i;
 
-#endif
+	i = 0;
+	while (str[i])
+		i++;
+	tmp = (char *)malloc(i + 1);
+	if (!tmp)
+		return (0);
+	i = 0;
+	while ((tmp[i] = str[i]))
+		i++;
+	return (tmp);
+}

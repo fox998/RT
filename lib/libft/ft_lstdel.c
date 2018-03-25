@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_lstdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/11/02 16:08:28 by afokin            #+#    #+#             */
+/*   Updated: 2017/11/02 16:08:30 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+	t_list *ptr;
+	t_list *tmp;
 
-#endif
+	if (!alst)
+		return ;
+	ptr = *alst;
+	while (ptr)
+	{
+		del(ptr->content, ptr->content_size);
+		tmp = ptr;
+		ptr = ptr->next;
+		free(tmp);
+	}
+	*alst = 0;
+}

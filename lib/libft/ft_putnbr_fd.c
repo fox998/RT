@@ -1,23 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2017/11/01 18:46:03 by afokin            #+#    #+#             */
+/*   Updated: 2017/11/01 18:46:06 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#include "libft.h"
 
-typedef struct		s_scene
+static void	dtoc(unsigned int n, int fd)
 {
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+	char c;
 
-#endif
+	if (n / 10 == 0)
+	{
+		c = n + '0';
+		write(fd, &c, 1);
+		return ;
+	}
+	else
+		dtoc(n / 10, fd);
+	c = n % 10 + '0';
+	write(fd, &c, 1);
+}
+
+void		ft_putnbr_fd(int n, int fd)
+{
+	unsigned int num;
+
+	if (n < 0)
+	{
+		num = -n;
+		write(fd, "-", 1);
+	}
+	else
+		num = n;
+	dtoc(num, fd);
+}
