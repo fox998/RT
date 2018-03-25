@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   function.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/24 11:49:27 by afokin            #+#    #+#             */
-/*   Updated: 2018/03/24 11:58:23 by afokin           ###   ########.fr       */
+/*   Created: 2018/03/25 13:10:29 by afokin            #+#    #+#             */
+/*   Updated: 2018/03/25 13:10:32 by afokin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#ifndef FUNCTION_H
+# define FUNCTION_H
 
-typedef struct		s_scene
-{
-	void		*3d_objs;
-	void		*lits;
-	void		*cam;
-}					t_scene;
+void		usage(char f);
+void		read_obg(fd, char *line);
 
 #endif

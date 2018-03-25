@@ -10,9 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/scene.h"
+#include "../inc/struct.h"
+#include "../inc/function.h"
+#include "../lib/libft/libft.h"
+#include <fcntl.h>
 
-void	read_scene(char *path, )
+static int	check_obj(char *line)
 {
-	
+	int		r;
+	char	*stim;
+
+	r = 0;
+	stim  = ft_strtrim(line);
+	!ft_strcmp(stim, "camera") ? (r = 1 && read_cam()) : 0;
+	free(stim);
+	return(r);
+}
+
+void		read_scene(char *path, t_window *wind)
+{
+	int		fd;
+	char	*line;
+
+
+	if ((fd = open(path, O_RDONLY)) < 0)
+		usage('f');
+	while (get_next_line(fd, line) > 0)
+	{
+		
+	}
 }
