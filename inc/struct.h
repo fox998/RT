@@ -21,11 +21,11 @@ typedef	struct			s_obj_3d
 {
 	void		*data;
 	int			(*check)(void *data);
-}					t_obj_3d
+}						t_obj_3d;
 
-typedef struct			s_scene
+typedef struct			s_scene1
 {
-	void		*3d_objs;
+	void		*objs_3d;
 	void		*lits;
 	void		*cam;
 }						t_scene;

@@ -20,7 +20,10 @@ SDL_DIR := $(SDL_TAR:.tar.gz=/)
 SDL_INC := $(SDL_DIR)include/
 SDL := $(SDL_DIR)build/.libs/libSDL2.a
 
-SRC := main.c
+LIBFT_DIR = $(LIB_DIR)libft/
+LIBFT = $(LIBFT_DIR)libft.a
+
+SRC := main.c read_obj.c read_scene.c usage.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
@@ -30,7 +33,7 @@ LIN_FLAG =
 
 CC = gcc
 
-NAME = 
+NAME = RTv1
 
 vpath %.c $(SRC_DIR)
 
@@ -38,8 +41,11 @@ vpath %.c $(SRC_DIR)
 
 all: $(NAME)
 
-$(NAME): $(SDL) $(OBJ)
-	%(СС) $(LIN_FLAG) -o $(NAME)
+$(NAME): $(LIBFT) $(OBJ)
+	%(СС) $(LIN_FLAG) $(OBJ) -o $(NAME)
+
+$(LIBFT): 
+	make -C $(LIBFT_DIR)
 
 $(SDL): $(SDL_DIR)
 	cd $(SDL_DIR) && make > /dev/null
@@ -49,7 +55,7 @@ $(SDL_DIR): $(SDL_TAR)
 	cd $(SDL_DIR) && ./configure > /dev/null
 
 $(OBJ_DIR)%.o:%.c
-	$(CC) $(OBJ_FLAG) -c $< -o $@ -I$(INC_DIR)
+	$(CC) $(OBJ_FLAG) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_DIR) $(LIBFT)
 
 clean:
 	echo $(OBJ)

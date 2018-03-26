@@ -14,6 +14,8 @@
 # define FUNCTION_H
 
 void		usage(char f);
-void		read_obg(fd, char *line);
+void		read_cam(int fd);
+void		read_win(int fd);
+void		read_scene(char *path);
 
 #endif

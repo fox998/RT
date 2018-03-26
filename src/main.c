@@ -10,7 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int main(void)
+#include "functoin.h"
+
+int main(int argc, char **argv)
 {
+	void *wind;
+
+	if (argc != 2)
+		usage('f');
+	read_scene(argv[argc - 1]);
 	return (0);
 }
