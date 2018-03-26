@@ -18,12 +18,16 @@
 static int	check_brackets(void (*f)(int fd), int fd)
 {
 	char	*line;
+	int		l;
 
-	if (get_next_line(fd, &line) < 1 || *line != '{')
-		usage('s');
+	if ((l = num_line(fd, &line)) < 0 || *line != '{')
+		sintax_usage(l);
 	free(line);
 	f(fd);
-	
+	if ((l = num_line(fd, &line)) < 0 || *line != '}')
+		sintax_usage(l);
+	free(line);
+	return (0);
 }
 
 static int	check_obj(char *line)
@@ -44,20 +48,24 @@ void		read_scene(char *path)
 	int		fd;
 	char	*line;
 	int		i;
-	int		(*fun[2])(int fd);
+	int		l;
+	void	(*fun[2])(int fd);
 
 
 	if ((fd = open(path, O_RDONLY)) < 0)
 		usage('f');
 	fun[0] = &read_cam;
 	fun[1] = &read_win;
-	while (get_next_line(fd, line) > 0)
+	while ((l = num_line(fd, &line)) > 0)
 	{
 		if (!*line)
 		{
 			free(line);
 			continue ;
 		}
-		(i = check_obj(line)) > 0 ? fun[i](fd) : (usage('s'));
+		ft_putendl(line);
+		ft_putendl("--");
+		(i = check_obj(line)) < 0 ?  (sintax_usage(l)) : check_brackets(fun[i], fd);
 	}
+	ft_putendl("***");
 }

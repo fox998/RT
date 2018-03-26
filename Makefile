@@ -23,7 +23,7 @@ SDL := $(SDL_DIR)build/.libs/libSDL2.a
 LIBFT_DIR = $(LIB_DIR)libft/
 LIBFT = $(LIBFT_DIR)libft.a
 
-SRC := main.c read_obj.c read_scene.c usage.c
+SRC := main.c read_obj.c read_scene.c usage.c num_line.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
@@ -42,7 +42,7 @@ vpath %.c $(SRC_DIR)
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
-	%(СС) $(LIN_FLAG) $(OBJ) -o $(NAME)
+	$(CC) $(LIN_FLAG) $(LIBFT) $(OBJ) -o $(NAME)
 
 $(LIBFT): 
 	make -C $(LIBFT_DIR)
@@ -55,7 +55,7 @@ $(SDL_DIR): $(SDL_TAR)
 	cd $(SDL_DIR) && ./configure > /dev/null
 
 $(OBJ_DIR)%.o:%.c
-	$(CC) $(OBJ_FLAG) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_DIR) $(LIBFT)
+	$(CC) $(OBJ_FLAG) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_DIR)
 
 clean:
 	echo $(OBJ)

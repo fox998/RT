@@ -13,9 +13,16 @@
 #include	"../lib/libft/libft.h"
 #include	<stdlib.h>
 
-void	usage(char f)
+int		usage(char f)
 {
 	f == 'f' ? ft_putendl("Usage: ./RTv1 scene_file") : 0;
 	f == 's' ? ft_putendl("Error: Invalid file format") : 0;
 	exit(0);
+}
+
+int		sintax_usage(int line)
+{
+	ft_putstr("Line : ");
+	ft_putendl(ft_itoa(line));
+	return (usage('s'));
 }
