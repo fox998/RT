@@ -37,7 +37,6 @@ void		read_cam(int fd)
 	int		l;
 	t_cam	*cam;
 
-	ft_putendl("pos");
 	(l = num_line(fd, &line)) < 0 || ft_strncmp("\tpos =>", line, 6) != 0 ?
 		(sintax_usage(l)) : *(line += 6);
 	cam = (t_cam *)malloc(sizeof(t_cam));
@@ -60,5 +59,18 @@ void		read_cam(int fd)
 void		read_win(int fd)
 {
 	fd = 0;
+}
+
+void		read_sphere(int fd)
+{
+	char		*line;
+	char		**mas;
+	int			l;
+	t_sphape	*sphere;
+
+	(l = num_line(fd, &line)) < 0 || ft_strncmp("\tpos =>", line, 6) != 0 ?
+		(sintax_usage(l)) : *(line += 6);
+
+
 }
 
