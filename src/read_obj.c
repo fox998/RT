@@ -28,32 +28,29 @@ static void	free_mas(char **mas)
 	free(mas);
 }
 
-#include <stdio.h>
+static void	read_vector_fild(t_dvec3 *fild, char *fild_name, int fd)
+{
+	char	**mas;
+	char	*line;
+
+	(l = num_line(fd, &line)) < 0 ||
+	ft_strncmp(fild_name, line, ft_strlen(fild_name)) != 0 ?
+		(sintax_usage(l)) : *(line += ft_strlen(fild_name));
+	mas = ft_strsplit(line, ',');
+	mas[0] ? (*pos)[0] = (ft_atoi(mas[0])) : sintax_usage(l);
+	mas[1] ? (*pos)[1] = (ft_atoi(mas[1])) : sintax_usage(l);
+	mas[2] ? (*pos)[2] = (ft_atoi(mas[2])) : sintax_usage(l);
+	free_mas(mas);
+	free(line);
+}
 
 void		read_cam(int fd)
 {
-	char	*line;
-	char	**mas;
-	int		l;
 	t_cam	*cam;
 
-	(l = num_line(fd, &line)) < 0 || ft_strncmp("\tpos =>", line, 6) != 0 ?
-		(sintax_usage(l)) : *(line += 6);
 	cam = (t_cam *)malloc(sizeof(t_cam));
-	mas = ft_strsplit(line, ',');
-	mas[0] ? cam->pos[0] = (ft_atoi(mas[0])) : sintax_usage(l);
-	mas[1] ? cam->pos[1] = (ft_atoi(mas[1])) : sintax_usage(l);
-	mas[2] ? cam->pos[2] = (ft_atoi(mas[2])) : sintax_usage(l);
-	free_mas(mas);
-	(l = num_line(fd, &line)) < 0 || ft_strncmp("\trot =>", line, 6) != 0 ?
-		sintax_usage(l) : *(line += 6);
-	ft_putendl("rot");
-	mas = ft_strsplit(line, ',');
-	mas[0] ? cam->dir[0] = ft_atoi(mas[0]) : sintax_usage(l);
-	mas[1] ? cam->dir[1] = ft_atoi(mas[1]) : sintax_usage(l);
-	mas[2] ? cam->dir[2] = ft_atoi(mas[2]) : sintax_usage(l);
-	free_mas(mas);
-	printf("pos = %f, %f, %f\nrot = %f, %f, %f\n", cam->pos[0], cam->pos[1], cam->pos[2], cam->dir[0], cam->dir[1], cam->dir[2]);
+	read_vector_fild(&cam->pos, "\tpos => ", fd);
+	read_vector_fild($cam->dir, "\tdir => ", fd);
 }
 
 void		read_win(int fd)
@@ -63,14 +60,10 @@ void		read_win(int fd)
 
 void		read_sphere(int fd)
 {
-	char		*line;
-	char		**mas;
-	int			l;
 	t_sphape	*sphere;
 
-	(l = num_line(fd, &line)) < 0 || ft_strncmp("\tpos =>", line, 6) != 0 ?
-		(sintax_usage(l)) : *(line += 6);
-
-
+	sphere = (t_sphere *)malloc(sizeof(t_sphere));
+	read_vector_fild(&sphere->center, "\tpos => ", fd);
+	
 }
 

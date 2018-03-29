@@ -23,7 +23,14 @@ typedef	struct			s_obj_3d
 	int			(*check)(void *data);
 }						t_obj_3d;
 
-typedef struct			s_scene1
+typedef struct			s_sphere
+{
+	double			r;
+	t_dvec3			center;
+	unsigned int	color;
+}						t_sphere;
+
+typedef struct			s_scene
 {
 	void		*objs_3d;
 	void		*lits;
