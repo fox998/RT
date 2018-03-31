@@ -23,7 +23,7 @@ SDL := $(SDL_DIR)build/.libs/libSDL2.a
 LIBFT_DIR = $(LIB_DIR)libft/
 LIBFT = $(LIBFT_DIR)libft.a
 
-SRC := main.c read_obj.c read_scene.c usage.c num_line.c
+SRC := main.c read_obj.c read_scene.c usage.c num_line.c ft_atoi_base.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 

@@ -49,7 +49,7 @@ int			ft_atoi_base(const char *str, int str_base)
 	while (*str && ((*str - '0' <= str_base && *str - '0' >= 0) ||
 	(*str - 'a' + 10 <= str_base && *str - 'a' >= 0)))
 	{
-		ret = ret * 10 -
+		ret = ret * str_base -
 		(*str >= 'a' && *str <= 'f' ? -10 + 'a' : '0') + *str;
 		str++;
 	}

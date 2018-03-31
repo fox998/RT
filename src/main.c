@@ -11,13 +11,14 @@
 /* ************************************************************************** */
 
 #include "function.h"
+#include "struct.h"
 
 int main(int argc, char **argv)
 {
-	//void *wind;
+	t_window wind;
 
 	if (argc != 2)
 		usage('f');
-	read_scene(argv[argc - 1]);
+	read_scene(argv[argc - 1], &wind);
 	return (0);
 }

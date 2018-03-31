@@ -17,6 +17,12 @@ typedef double			t_dvec3[3];
 
 typedef int				t_ivec3[3];
 
+typedef struct			s_read
+{
+	char		*name;
+	void		*(*f)(int fd);
+}						t_read;
+
 typedef	struct			s_obj_3d
 {
 	void		*data;

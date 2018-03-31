@@ -9,7 +9,7 @@
                 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
                 "/usr/include",
                 "${workspaceRoot}",
-				"${workspaceRoot}/inc"
+                "${workspaceRoot}/inc"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
@@ -28,7 +28,10 @@
             "macFrameworkPath": [
                 "/System/Library/Frameworks",
                 "/Library/Frameworks"
-            ]
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         },
         {
             "name": "Linux",
@@ -36,7 +39,7 @@
                 "/usr/include",
                 "/usr/local/include",
                 "${workspaceRoot}",
-				"${workspaceRoot}/inc"
+                "${workspaceRoot}/inc"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",

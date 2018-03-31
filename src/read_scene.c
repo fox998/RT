@@ -15,7 +15,22 @@
 #include "libft.h"
 #include <fcntl.h>
 
-static int	check_brackets(void (*f)(int fd), int fd)
+static t_read	*arr_init()
+{
+	int		arr_size;
+	t_read	*arr;
+
+	arr_size = 2;
+	arr = (t_read *)malloc(sizeof(t_read) * (arr_size + 1));
+	arr[0].name = "camera";
+	arr[0].f = &read_cam;
+	arr[1].name = "sphere";
+	arr[1].f = &read_sphere;
+	arr[arr_size].name = 0;
+	return (arr);
+}
+
+static int		check_brackets(t_read obj, int fd, t_window *wind)
 {
 	char	*line;
 	int		l;
@@ -23,39 +38,24 @@ static int	check_brackets(void (*f)(int fd), int fd)
 	if ((l = num_line(fd, &line)) < 0 || *line != '{')
 		sintax_usage(l);
 	free(line);
-	f(fd);
+	fr_strncmp("cam", obj.name, 3) == 0 ? wind.cam = obj.f(fd) : ;
 	if ((l = num_line(fd, &line)) < 0 || *line != '}')
 		sintax_usage(l);
 	free(line);
 	return (0);
 }
 
-static int	check_obj(char *line)
-{
-	int		r;
-	char	*stim;
-
-	r = -1;
-	stim  = ft_strtrim(line);
-	!ft_strcmp(stim, "camera") ? r = 0 : 0;
-	!ft_strcmp(stim, "window") ? r = 1 : 0;
-	free(stim);
-	return(r);
-}
-
-void		read_scene(char *path)
+void		read_scene(char *path, t_window *wind)
 {
 	int		fd;
 	char	*line;
 	int		i;
 	int		l;
-	void	(*fun[2])(int fd);
-
+	t_read	*arr;
 
 	if ((fd = open(path, O_RDONLY)) < 0)
 		usage('f');
-	fun[0] = &read_cam;
-	fun[1] = &read_win;
+	arr = arr_init();
 	while ((l = num_line(fd, &line)) > 0)
 	{
 		if (!*line)
@@ -63,9 +63,9 @@ void		read_scene(char *path)
 			free(line);
 			continue ;
 		}
-		ft_putendl(line);
-		ft_putendl("--");
-		(i = check_obj(line)) < 0 ?  (sintax_usage(l)) : check_brackets(fun[i], fd);
+		i = 0;
+		while (arr[i].name && ft_strncmp(line, arr[i].name, ft_strlen(arr[i].name)))
+			i++;
+		arr[i].name ? check_brackets(arr[i], fd, wind) : sintax_usage(l);
 	}
-	ft_putendl("***");
 }
