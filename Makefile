@@ -29,7 +29,7 @@ OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
 OBJ_FLAG = -Wextra -Werror -Wall
 
-LIN_FLAG = 
+LIN_FLAG = -framework SDL2 -F /Library/Frameworks/
 
 CC = gcc
 
@@ -47,15 +47,8 @@ $(NAME): $(LIBFT) $(OBJ)
 $(LIBFT): 
 	make -C $(LIBFT_DIR)
 
-$(SDL): $(SDL_DIR)
-	cd $(SDL_DIR) && make > /dev/null
-
-$(SDL_DIR): $(SDL_TAR)
-	tar -xf $(SDL_TAR) -C $(LIB_DIR)
-	cd $(SDL_DIR) && ./configure > /dev/null
-
 $(OBJ_DIR)%.o:%.c
-	$(CC) $(OBJ_FLAG) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_DIR)
+	$(CC) $(OBJ_FLAG) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_DIR) -I/Library/Frameworks/SDL2.framework/Headers/
 
 clean:
 	echo $(OBJ)
@@ -65,5 +58,5 @@ sdlfclean:
 
 fclean: clean
 	rm -f $(NAME)
-	if test -f $(SDL_DIR)Makefile; then (make clean -C $(SDL_DIR)); fi
+
 re: fclean all

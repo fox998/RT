@@ -19,7 +19,7 @@ int			num_line(int fd, char **line);
 void		*read_cam(int fd);
 void		*read_win(int fd);
 void		*read_sphere(int fd);
-void		read_scene(char *path, t_window *wind);
+void		read_scene(char *path, void *wind);
 int			ft_atoi_base(const char *str, int str_base);
 
 #endif

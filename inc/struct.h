@@ -68,6 +68,8 @@ typedef struct			s_window
 	void		*win;
 	void		*img;
 	void		*cam;
+	void		*lst_obg;
+	void		*srf;
 	void		*scn;
 	int			w;
 	int			h;

@@ -30,7 +30,21 @@ static t_read	*arr_init()
 	return (arr);
 }
 
-static int		check_brackets(t_read obj, int fd, t_window *wind)
+static void		add_obj(t_window *wind, t_read *obj, int fd)
+{
+	t_obj_3d	*new_3d_obj;
+
+	if (ft_strncmp("cam", obj->name, 3) == 0)
+		wind->cam = obj->f(fd);
+	else
+	{
+		new_3d_obj = (t_obj_3d *)malloc(sizeof(t_obj_3d));
+		new_3d_obj = obj->f(fd);
+		ft_lstadd(wind->lst_obg, ft_lstnew(new_3d_obj, sizeof(t_obj_3d *)));
+	}
+}
+
+static int		check_brackets(t_read *obj, int fd, t_window *wind)
 {
 	char	*line;
 	int		l;
@@ -38,14 +52,14 @@ static int		check_brackets(t_read obj, int fd, t_window *wind)
 	if ((l = num_line(fd, &line)) < 0 || *line != '{')
 		sintax_usage(l);
 	free(line);
-	fr_strncmp("cam", obj.name, 3) == 0 ? wind.cam = obj.f(fd) : ;
+	add_obj(wind, obj, fd);
 	if ((l = num_line(fd, &line)) < 0 || *line != '}')
 		sintax_usage(l);
 	free(line);
 	return (0);
 }
 
-void		read_scene(char *path, t_window *wind)
+void		read_scene(char *path, void *wind)
 {
 	int		fd;
 	char	*line;
@@ -56,6 +70,7 @@ void		read_scene(char *path, t_window *wind)
 	if ((fd = open(path, O_RDONLY)) < 0)
 		usage('f');
 	arr = arr_init();
+	((t_window *)wind)->lst_obg = 0;
 	while ((l = num_line(fd, &line)) > 0)
 	{
 		if (!*line)
@@ -66,6 +81,6 @@ void		read_scene(char *path, t_window *wind)
 		i = 0;
 		while (arr[i].name && ft_strncmp(line, arr[i].name, ft_strlen(arr[i].name)))
 			i++;
-		arr[i].name ? check_brackets(arr[i], fd, wind) : sintax_usage(l);
+		arr[i].name ? check_brackets(&arr[i], fd, wind) : sintax_usage(l);
 	}
 }
