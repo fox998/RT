@@ -15,11 +15,6 @@ LIB_DIR := ./lib/
 INC_DIR := ./inc/
 OBJ_DIR := ./obj/
 
-SDL_TAR := $(LIB_DIR)SDL2-2.0.7.tar.gz
-SDL_DIR := $(SDL_TAR:.tar.gz=/)
-SDL_INC := $(SDL_DIR)include/
-SDL := $(SDL_DIR)build/.libs/libSDL2.a
-
 LIBFT_DIR = $(LIB_DIR)libft/
 LIBFT = $(LIBFT_DIR)libft.a
 
@@ -29,7 +24,15 @@ OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
 OBJ_FLAG = -Wextra -Werror -Wall
 
-LIN_FLAG = -framework SDL2 -F /Library/Frameworks/
+SDL_FLAG :=
+
+ifeq ($(shell uname), Linux)
+	SDL_FLAG = -lSDL2
+else
+	SDL_FLAG = -framework SDL2 -F /Library/Frameworks/
+endif
+
+LIN_FLAG = $(SDL_FLAG)
 
 CC = gcc
 
@@ -42,7 +45,7 @@ vpath %.c $(SRC_DIR)
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(LIN_FLAG) $(LIBFT) $(OBJ) -o $(NAME)
+	$(CC) $(OBJ) $(LIN_FLAG) $(LIBFT) -o $(NAME)
 
 $(LIBFT): 
 	make -C $(LIBFT_DIR)
@@ -51,12 +54,17 @@ $(OBJ_DIR)%.o:%.c
 	$(CC) $(OBJ_FLAG) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_DIR) -I/Library/Frameworks/SDL2.framework/Headers/
 
 clean:
-	echo $(OBJ)
+	rm -f $(OBJ)
 
-sdlfclean:
-	rm -rf $(SDL_DIR)
+libfclean:
+	make fclean -C $(LIBFT_DIR)
 
 fclean: clean
 	rm -f $(NAME)
 
+relib:
+	make re -C $(LIBFT_DIR)
+
 re: fclean all
+
+reall: libfclean re

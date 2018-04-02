@@ -69,11 +69,11 @@ void		*read_cam(int fd)
 	return (cam);
 }
 
-void		*read_win(int fd)
-{
-	fd = 0;
-	return (0);
-}
+// void		*read_win(int fd)
+// {
+// 	fd = 0;
+// 	return (0);
+// }
 
 void		*read_sphere(int fd)
 {

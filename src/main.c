@@ -12,7 +12,7 @@
 
 #include "function.h"
 #include "struct.h"
-#include <SDL.h>
+#include "my_sdl.h"
 
 #include <stdio.h>
 
