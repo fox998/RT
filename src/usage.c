@@ -13,6 +13,12 @@
 #include	"../lib/libft/libft.h"
 #include	<stdlib.h>
 
+int		str_usage(char *str)
+{
+	ft_putendl(str);
+	exit(0);
+}
+
 int		usage(char f)
 {
 	f == 'f' ? ft_putendl("Usage: ./RTv1 scene_file") : 0;

@@ -18,7 +18,8 @@ OBJ_DIR := ./obj/
 LIBFT_DIR = $(LIB_DIR)libft/
 LIBFT = $(LIBFT_DIR)libft.a
 
-SRC := main.c read_obj.c read_scene.c usage.c num_line.c ft_atoi_base.c
+SRC :=	main.c	read_obj.c	read_scene.c	usage.c	num_line.c	ft_atoi_base.c \
+		get_scene.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 

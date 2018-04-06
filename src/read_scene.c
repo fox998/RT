@@ -39,7 +39,7 @@ static void		add_obj(t_window *wind, t_read *obj, int fd)
 	else
 	{
 		new_3d_obj = (t_obj_3d *)malloc(sizeof(t_obj_3d));
-		new_3d_obj = obj->f(fd);
+		new_3d_obj->data = obj->f(fd);
 		ft_lstadd(wind->lst_obg, ft_lstnew(new_3d_obj, sizeof(t_obj_3d *)));
 	}
 }

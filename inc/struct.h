@@ -38,8 +38,8 @@ typedef struct			s_sphere
 
 typedef struct			s_scene
 {
-	void		*objs_3d;
-	void		*lits;
+	void		*obj;
+	void		*lit;
 	void		*cam;
 }						t_scene;
 
@@ -64,12 +64,11 @@ typedef struct			s_img
 
 typedef struct			s_window
 {
-	void		*mlx;
 	void		*win;
-	void		*img;
 	void		*cam;
+	void		*ren;
 	void		*lst_obg;
-	void		*srf;
+	void		*lst_lit;
 	void		*scn;
 	int			w;
 	int			h;
