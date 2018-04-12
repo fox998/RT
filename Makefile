@@ -18,12 +18,21 @@ OBJ_DIR := ./obj/
 LIBFT_DIR = $(LIB_DIR)libft/
 LIBFT = $(LIBFT_DIR)libft.a
 
-SRC :=	main.c	read_obj.c	read_scene.c	usage.c	num_line.c	ft_atoi_base.c \
-		get_scene.c
+SRC :=	main.c\
+		read_obj.c\
+		read_scene.c\
+		usage.c	num_line.c\
+		ft_atoi_base.c\
+		get_scene.c\
+		vector_fun.c\
+		render.c\
+		obj_sphere.c\
+		obj_light.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
-OBJ_FLAG = -Wextra -Werror -Wall
+OBJ_FLAG = 
+#-Wextra -Werror -Wall
 
 SDL_FLAG :=
 
@@ -33,7 +42,7 @@ else
 	SDL_FLAG = -framework SDL2 -F /Library/Frameworks/
 endif
 
-LIN_FLAG = $(SDL_FLAG)
+LIN_FLAG = $(SDL_FLAG) -lm
 
 CC = gcc
 

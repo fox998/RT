@@ -2,6 +2,8 @@
 #include "struct.h"
 #include "libft.h"
 
+#include <stdio.h>
+
 static void		*lst_to_arr(t_list *lst)
 {
 	void	**arr;
@@ -16,25 +18,23 @@ static void		*lst_to_arr(t_list *lst)
 		size++;
 		tmp = tmp->next;
 	}
-	arr = malloc(sizeof(t_obj_3d *) * size);
+	arr = malloc(sizeof(t_obj_3d *) * (size + 1));
 	i = -1;
-	while (lst)
+	while (lst->next)
 	{
 		arr[++i] = lst->content;
 		tmp = lst;
 		lst = lst->next;
 		free(tmp);
 	}
+	arr[i + 1] = NULL;
 	return (arr);
 }
 
 void	get_scene(void *window)
 {
 	t_scene		*scn;
-	t_window	*wind;
 
-	wind = window;
-	scn = (t_scene *)malloc(sizeof(t_scene));
-	scn->obj = lst_to_arr(wind->lst_obg);
-	wind->scn = scn;
+	scn = ((t_window *)window)->scn;
+	scn->obj = lst_to_arr(scn->obj);
 }

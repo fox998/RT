@@ -13,9 +13,17 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
+/*
+******* VECTOR ****************************************************************
+*/
+
 typedef double			t_dvec3[3];
 
 typedef int				t_ivec3[3];
+
+/*
+******* HELP STRUCT ***********************************************************
+*/
 
 typedef struct			s_read
 {
@@ -23,10 +31,33 @@ typedef struct			s_read
 	void		*(*f)(int fd);
 }						t_read;
 
+typedef struct			s_intersect_param
+{
+	t_dvec3			i_point;
+	t_dvec3			normal;
+	t_dvec3			e;
+	t_dvec3			v;
+	double			t;
+	unsigned int	color;
+}						t_iparam;
+
+typedef struct			s_shading
+{
+	t_dvec3			l;
+	t_dvec3			h;
+	double			h_dot_n;
+	double			phong;
+	double			lambert;
+}						t_shading;
+
+/*
+******* OBJECT STRUCT *********************************************************
+*/
+
 typedef	struct			s_obj_3d
 {
 	void		*data;
-	int			(*check)(void *data);
+	int			(*intersect)(void *data, t_dvec3 *ray, t_iparam *param);
 }						t_obj_3d;
 
 typedef struct			s_sphere
@@ -35,6 +66,23 @@ typedef struct			s_sphere
 	t_dvec3			center;
 	unsigned int	color;
 }						t_sphere;
+
+typedef struct			s_light
+{
+	t_dvec3			pos;
+}						t_light;
+
+/*
+******* MANAGERS STRUCT *******************************************************
+*/
+
+typedef struct			s_color
+{
+	unsigned int	r:8;
+	unsigned int	g:8;
+	unsigned int	b:8;
+	unsigned int	a:8;
+}						t_color;
 
 typedef struct			s_scene
 {
@@ -47,7 +95,8 @@ typedef	struct			s_cam
 {
 	t_dvec3		pos;
 	t_dvec3		dir;
-	t_dvec3		plane;
+	t_dvec3		u;
+	t_dvec3		r;
 }						t_cam;
 
 typedef struct			s_img
@@ -65,11 +114,9 @@ typedef struct			s_img
 typedef struct			s_window
 {
 	void		*win;
-	void		*cam;
+	t_cam		*cam;
 	void		*ren;
-	void		*lst_obg;
-	void		*lst_lit;
-	void		*scn;
+	t_scene		*scn;
 	int			w;
 	int			h;
 }						t_window;

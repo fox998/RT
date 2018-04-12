@@ -13,7 +13,9 @@
 #include "libft.h"
 #include "struct.h"
 #include "function.h"
+#include "vector.h"
 #include <stdlib.h>
+#include <math.h>
 
 static void	free_mas(char **mas)
 {
@@ -28,16 +30,18 @@ static void	free_mas(char **mas)
 	free(mas);
 }
 
-static void	read_vector_fild(t_dvec3 *fild, char *fild_name, int fd)
+void	read_vector_fild(void *fild_ptr, char *fild_name, int fd)
 {
 	char	**mas;
 	char	*line;
+	t_dvec3	*fild;
 	int		l;
 
 	(l = num_line(fd, &line)) < 0 ||
 	ft_strncmp(fild_name, line, ft_strlen(fild_name)) != 0 ?
 		(sintax_usage(l)) : *(line += ft_strlen(fild_name));
 	mas = ft_strsplit(line, ',');
+	fild = fild_ptr;
 	mas[0] ? (*fild)[0] = (ft_atoi(mas[0])) : sintax_usage(l);
 	mas[1] ? (*fild)[1] = (ft_atoi(mas[1])) : sintax_usage(l);
 	mas[2] ? (*fild)[2] = (ft_atoi(mas[2])) : sintax_usage(l);
@@ -45,7 +49,7 @@ static void	read_vector_fild(t_dvec3 *fild, char *fild_name, int fd)
 	free(line - ft_strlen(fild_name));
 }
 
-static int	read_int_fild(char *fild_name, int base, int fd)
+int	read_int_fild(char *fild_name, int base, int fd)
 {
 	char	*line;
 	int		res;
@@ -66,23 +70,22 @@ void		*read_cam(int fd)
 	cam = (t_cam *)malloc(sizeof(t_cam));
 	read_vector_fild(&cam->pos, "\tpos => ", fd);
 	read_vector_fild(&cam->dir, "\tdir => ", fd);
+	cam->u[0] = 0;
+	if (cam->dir[0] == 0 && cam->dir[1] == 0)
+	{
+		cam->u[1] = 1;
+		cam->u[2] = 0;
+		vector_product(&cam->r, cam->dir, cam->u);
+	}
+	else
+	{
+		cam->u[1] = 0;
+		cam->u[2] = 1;
+		vector_product(&cam->r, cam->dir, cam->u);
+		vector_product(&cam->u, cam->dir, cam->r);
+		norm_vector(&cam->u);
+	}
+	norm_vector(&cam->r);
+	norm_vector(&cam->dir);
 	return (cam);
 }
-
-// void		*read_win(int fd)
-// {
-// 	fd = 0;
-// 	return (0);
-// }
-
-void		*read_sphere(int fd)
-{
-	t_sphere	*sphere;
-
-	sphere = (t_sphere *)malloc(sizeof(t_sphere));
-	read_vector_fild(&sphere->center, "\tcenter => ", fd);
-	sphere->r = read_int_fild("\tr => ", 10, fd);
-	sphere->color = read_int_fild("\tcolor => ", 16, fd);
-	return (sphere);
-}
-

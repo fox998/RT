@@ -27,8 +27,16 @@ int			num_line(int fd, char **line);
 void		*read_cam(int fd);
 void		*read_win(int fd);
 void		*read_sphere(int fd);
+void		*read_light(int fd);
 void		read_scene(char *path, void *wind);
 void		get_scene(void *wind);
 int			ft_atoi_base(const char *str, int str_base);
+void		read_vector_fild(void *fild_ptr, char *fild_name, int fd);
+int			read_int_fild(char *fild_name, int base, int fd);
+
+/*
+*	RENDER
+*/
+void		render(void *wind);
 
 #endif

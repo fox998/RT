@@ -16,16 +16,21 @@
 
 #include <stdio.h>
 
-static void			init(t_window *wind)
+static void			init(t_window *wind, char *path)
 {
 	int	i;
 
 	i = SDL_Init(SDL_INIT_VIDEO);
-	wind->win = SDL_CreateWindow("Hello World!",
-	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
+	wind->w = 640;
+	wind->h = 480;
+	wind->win = SDL_CreateWindow("Hello World!", SDL_WINDOWPOS_UNDEFINED,
+	SDL_WINDOWPOS_UNDEFINED, wind->w, wind->h, SDL_WINDOW_SHOWN);
 	wind->ren = SDL_CreateRenderer(wind->win, -1, SDL_RENDERER_ACCELERATED);
 	if (i || !wind->win || !wind->ren)
 		str_usage((char *)SDL_GetError());
+	wind->scn = malloc(sizeof(t_scene));
+	read_scene(path, wind);
+	get_scene(wind);
 }
 
 int main(int argc, char **argv)
@@ -34,10 +39,9 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 		usage('f');
-	read_scene(argv[argc - 1], &wind);
-	get_scene(&wind);
-	init(&wind);
-	SDL_SetRenderDrawColor(wind.ren, 0,0, 0xFF, 0xFF);
+	init(&wind, argv[argc - 1]);
+	//SDL_SetRenderDrawColor(wind.ren, 0,0, 0xFF, 0xFF);
+	render(&wind);
 	SDL_RenderPresent(wind.ren);
 	SDL_Delay( 5000 );
 	return (0);

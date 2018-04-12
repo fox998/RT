@@ -64,6 +64,7 @@ static int		read_nl(t_file *fl, char **line, int j, int len)
 				return (1);
 			else
 				(*line)[++j] = fl->buf[fl->str_start];
+		ft_bzero(fl->buf, BUFF_SIZE + 1);
 	}
 	if (!len && (*line))
 		return (1);
