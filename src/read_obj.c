@@ -63,6 +63,8 @@ int	read_int_fild(char *fild_name, int base, int fd)
 	return (res);
 }
 
+#include <stdio.h>
+
 void		*read_cam(int fd)
 {
 	t_cam	*cam;
@@ -71,21 +73,22 @@ void		*read_cam(int fd)
 	read_vector_fild(&cam->pos, "\tpos => ", fd);
 	read_vector_fild(&cam->dir, "\tdir => ", fd);
 	cam->u[0] = 0;
+	norm_vector(&cam->dir);
 	if (cam->dir[0] == 0 && cam->dir[1] == 0)
 	{
 		cam->u[1] = 1;
 		cam->u[2] = 0;
 		vector_product(&cam->r, cam->dir, cam->u);
+		norm_vector(&cam->r);
 	}
 	else
 	{
 		cam->u[1] = 0;
 		cam->u[2] = 1;
 		vector_product(&cam->r, cam->dir, cam->u);
-		vector_product(&cam->u, cam->dir, cam->r);
+		norm_vector(&cam->r);
+		vector_product(&cam->u, cam->r, cam->dir);
 		norm_vector(&cam->u);
 	}
-	norm_vector(&cam->r);
-	norm_vector(&cam->dir);
 	return (cam);
 }

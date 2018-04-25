@@ -9,8 +9,8 @@ void		norm_vector(t_dvec3 *vec)
 
 	len = (sqrt(vec[0][0] * vec[0][0] + vec[0][1] * vec[0][1] +
 	vec[0][2] * vec[0][2]));
-	if (fabs(len) < 0.1)
-		str_usage("Eror: Zero vector");
+	if (len == 0.0)
+		return;
 	vec[0][0] /= len;
 	vec[0][1] /= len;
 	vec[0][2] /= len;
@@ -30,6 +30,7 @@ void		vector_product(t_dvec3 *prod, t_dvec3 a, t_dvec3 b)
 	(*prod)[2] = z;
 }
 
+#include <stdio.h>
 double		dot_product(t_dvec3 a, t_dvec3 b)
 {
 	return (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]);

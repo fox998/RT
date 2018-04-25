@@ -21,8 +21,8 @@ static void			init(t_window *wind, char *path)
 	int	i;
 
 	i = SDL_Init(SDL_INIT_VIDEO);
-	wind->w = 640;
-	wind->h = 480;
+	wind->w = 840;
+	wind->h = 840;
 	wind->win = SDL_CreateWindow("Hello World!", SDL_WINDOWPOS_UNDEFINED,
 	SDL_WINDOWPOS_UNDEFINED, wind->w, wind->h, SDL_WINDOW_SHOWN);
 	wind->ren = SDL_CreateRenderer(wind->win, -1, SDL_RENDERER_ACCELERATED);
@@ -30,19 +30,29 @@ static void			init(t_window *wind, char *path)
 		str_usage((char *)SDL_GetError());
 	wind->scn = malloc(sizeof(t_scene));
 	read_scene(path, wind);
+	if (!wind->cam)
+		usage('s');
 	get_scene(wind);
 }
 
 int main(int argc, char **argv)
 {
-	t_window wind;
+	t_window	wind;
+	int			f;
+	SDL_Event	e;
 
 	if (argc != 2)
 		usage('f');
 	init(&wind, argv[argc - 1]);
-	//SDL_SetRenderDrawColor(wind.ren, 0,0, 0xFF, 0xFF);
 	render(&wind);
 	SDL_RenderPresent(wind.ren);
-	SDL_Delay( 5000 );
+	f = 1;
+	while (f)
+	{
+		while (SDL_PollEvent(&e) != 0 && f)
+			if (e.type == SDL_QUIT ||
+			(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
+				f = 0;
+	}
 	return (0);
 }

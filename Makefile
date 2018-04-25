@@ -27,7 +27,10 @@ SRC :=	main.c\
 		vector_fun.c\
 		render.c\
 		obj_sphere.c\
-		obj_light.c
+		obj_light.c\
+		obj_plane.c\
+		obj_cylinder.c\
+		obj_cone.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 

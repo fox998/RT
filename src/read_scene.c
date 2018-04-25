@@ -12,6 +12,7 @@
 
 #include "struct.h"
 #include "function.h"
+#include "vector.h"
 #include "libft.h"
 #include <fcntl.h>
 
@@ -22,7 +23,7 @@ static t_read	*arr_init()
 	int		arr_size;
 	t_read	*arr;
 
-	arr_size = 3;
+	arr_size = 6;
 	arr = (t_read *)malloc(sizeof(t_read) * (arr_size + 1));
 	arr[0].name = "camera";
 	arr[0].f = &read_cam;
@@ -30,6 +31,12 @@ static t_read	*arr_init()
 	arr[1].f = &read_sphere;
 	arr[2].name = "light";
 	arr[2].f = &read_light;
+	arr[3].name = "cylinder";
+	arr[3].f = &read_cylinder;
+	arr[4].name = "plane";
+	arr[4].f = &read_plane;
+	arr[5].name = "cone";
+	arr[5].f = &read_cone;
 	arr[arr_size].name = 0;
 	return (arr);
 }
@@ -39,12 +46,20 @@ static void		add_obj(t_window *wind, t_read *obj, int fd)
 {
 	t_obj_3d	*new_3d_obj;
 	t_scene		*scn;
+	t_light		*light;
 
 	scn = wind->scn;
 	if (ft_strncmp("cam", obj->name, 3) == 0)
+	{
 		wind->cam = obj->f(fd);
+		get_vector(&wind->cam->u,wind->cam->u, wind->h / (double)wind->w - 1.0, wind->cam->u);
+	}
 	else if (ft_strncmp("lig", obj->name, 3) == 0)
-		scn->lit = obj->f(fd);
+	{
+		light = obj->f(fd);
+		light->next = scn->lit;
+		scn->lit = light;
+	}
 	else
 	{
 		new_3d_obj = obj->f(fd);
@@ -78,6 +93,8 @@ void		read_scene(char *path, void *wind)
 	if ((fd = open(path, O_RDONLY)) < 0)
 		usage('f');
 	arr = arr_init();
+	((t_window *)wind)->scn->lit = 0;
+	((t_window *)wind)->cam = 0;
 	while ((l = num_line(fd, &line)) > 0)
 	{
 		if (!*line)

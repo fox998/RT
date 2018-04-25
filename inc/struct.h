@@ -35,7 +35,6 @@ typedef struct			s_intersect_param
 {
 	t_dvec3			i_point;
 	t_dvec3			normal;
-	t_dvec3			e;
 	t_dvec3			v;
 	double			t;
 	unsigned int	color;
@@ -57,7 +56,7 @@ typedef struct			s_shading
 typedef	struct			s_obj_3d
 {
 	void		*data;
-	int			(*intersect)(void *data, t_dvec3 *ray, t_iparam *param);
+	int			(*intersect)(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *param);
 }						t_obj_3d;
 
 typedef struct			s_sphere
@@ -69,8 +68,35 @@ typedef struct			s_sphere
 
 typedef struct			s_light
 {
-	t_dvec3			pos;
+	//t_dvec3			pos;
+	t_dvec3			dir;
+	struct s_light	*next;
 }						t_light;
+
+typedef struct			s_plane
+{
+	t_dvec3			n;
+	t_dvec3			plane_point;
+	unsigned int	color;
+}						t_plane;
+
+typedef	struct			s_cylinder
+{
+	t_dvec3			dir;
+	t_dvec3			pos;
+	unsigned int	r;
+	unsigned int	color;
+}						t_cylinder;
+
+typedef	struct			s_cone
+{
+	t_dvec3			dir;
+	t_dvec3			pos;
+	unsigned int	a;
+	unsigned int	color;
+	double			sin_a;
+	double			cos_a;
+}						t_cone;
 
 /*
 ******* MANAGERS STRUCT *******************************************************
