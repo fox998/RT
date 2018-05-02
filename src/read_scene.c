@@ -16,8 +16,6 @@
 #include "libft.h"
 #include <fcntl.h>
 
-#include <stdio.h>
-
 static t_read	*arr_init()
 {
 	int		arr_size;

@@ -2,8 +2,6 @@
 #include "struct.h"
 #include "libft.h"
 
-#include <stdio.h>
-
 static void		*lst_to_arr(t_list *lst)
 {
 	void	**arr;
@@ -20,7 +18,7 @@ static void		*lst_to_arr(t_list *lst)
 	}
 	arr = malloc(sizeof(t_obj_3d *) * (size + 1));
 	i = -1;
-	while (lst->next)
+	while (lst)
 	{
 		arr[++i] = lst->content;
 		tmp = lst;

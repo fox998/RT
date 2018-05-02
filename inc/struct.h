@@ -68,8 +68,8 @@ typedef struct			s_sphere
 
 typedef struct			s_light
 {
-	//t_dvec3			pos;
 	t_dvec3			dir;
+	double			intensity;
 	struct s_light	*next;
 }						t_light;
 

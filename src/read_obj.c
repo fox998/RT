@@ -63,8 +63,6 @@ int	read_int_fild(char *fild_name, int base, int fd)
 	return (res);
 }
 
-#include <stdio.h>
-
 void		*read_cam(int fd)
 {
 	t_cam	*cam;

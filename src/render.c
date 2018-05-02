@@ -10,8 +10,6 @@ static void		get_rey(t_cam *cam, t_dvec3 *ray, double *cam_cor)
 	ray[0][2] = cam->dir[2] * 1.5 + cam->u[2] * cam_cor[1] + cam->r[2] * cam_cor[0];
 }
 
-#include <stdio.h>
-
 static unsigned int		shading(t_light *lights, t_color *color, t_iparam p, t_obj_3d **shepe)
 {
 	double		ambient_intens;
@@ -27,7 +25,7 @@ static unsigned int		shading(t_light *lights, t_color *color, t_iparam p, t_obj_
 	s.phong = 0;
 	while (lights)
 	{
-		l_intens = 0.8;
+		l_intens = lights->intensity;
 		ambient_intens += (0.08 / (i + 1)) * l_intens;
 		i = 0;
 		while (shepe[i] && !shepe[i]->intersect(shepe[i]->data, lights->dir, p.i_point, NULL))
@@ -87,4 +85,5 @@ void	render(void *w)
 			SDL_RenderDrawPoint(wind->ren, x, y);
 		}
 	}
+	SDL_RenderPresent(wind->ren);
 }

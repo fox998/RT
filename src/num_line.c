@@ -12,8 +12,6 @@
 
 #include "libft.h"
 
-#include <stdio.h>
-
 int		num_line(int fd, char **line)
 {
 	static int num = 0;

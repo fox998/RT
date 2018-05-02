@@ -8,11 +8,10 @@ void		*read_light(int fd)
 {
 	t_light		*light;
 	int			tmp;
-	//t_obj_3d	*shepe;
 
 	light = (t_light *)malloc(sizeof(t_light));
-	//shepe = (t_obj_3d *)malloc(sizeof(t_obj_3d));
 	read_vector_fild(&light->dir, "\tdir => ", fd);
+	light->intensity = fmax(1, read_int_fild("\tintensity => ", 10, fd)) / 100.0;
 	norm_vector(&light->dir);
 	return (light);
 }

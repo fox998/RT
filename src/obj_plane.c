@@ -39,8 +39,8 @@ void		*read_plane(int fd)
 	t_plane		*plane;
 
 	plane = (t_plane *)malloc(sizeof(t_plane));
-	read_vector_fild(&plane->n, "\tn => ", fd);
-	read_vector_fild(&plane->plane_point, "\tpoint => ", fd);
+	read_vector_fild(&plane->n, "\tdir => ", fd);
+	read_vector_fild(&plane->plane_point, "\tpos => ", fd);
 	plane->color = read_int_fild("\tcolor => ", 16, fd);
 	norm_vector(&plane->n);
 	shape = (t_obj_3d *)malloc(sizeof(t_obj_3d));

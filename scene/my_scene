@@ -6,8 +6,8 @@ camera
 
 sphere
 {
-	center => -2, -3 , 1
-	r => -3
+	pos => -2, -3 , 1
+	r => 3
 	color => 000099
 }
 
@@ -15,7 +15,7 @@ cylinder
 {
 	pos => 3, -3, 0
 	dir => 6, 2, -10
-	r => -2
+	r => 2
 	color => 00aa00
 }
 
@@ -29,28 +29,27 @@ cone
 
 plane
 {
-	n => 0, -1, 0
-	point => 0, 6, 0
+	dir => 0, -1, 0
+	pos => 0, 6, 0
 	color => aa0000
 }
 
 plane
 {
-	n => 0, 0, 10
-	point => 0, 0, 0
-	color => -0000ff
+	dir => 0, 0, 10
+	pos => 0, 0, 0
+	color => 0000ff
 }
 
 
 light
 {
 	dir => 5, -6, 5
+	intensity => 90
 }
 
 light
 {
 	dir => -5, -6, 1
+	intensity => 10
 }
-
-
-

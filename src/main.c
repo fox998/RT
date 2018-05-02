@@ -11,10 +11,9 @@
 /* ************************************************************************** */
 
 #include "function.h"
+#include "vector.h"
 #include "struct.h"
 #include "my_sdl.h"
-
-#include <stdio.h>
 
 static void			init(t_window *wind, char *path)
 {
@@ -29,11 +28,23 @@ static void			init(t_window *wind, char *path)
 	if (i || !wind->win || !wind->ren)
 		str_usage((char *)SDL_GetError());
 	wind->scn = malloc(sizeof(t_scene));
+	wind->scn->obj = 0;
 	read_scene(path, wind);
 	if (!wind->cam)
 		usage('s');
 	get_scene(wind);
 }
+
+static int		cam_move(t_cam *cam, t_dvec3 v, int sing)
+{
+	double		delt;
+
+	delt = 0.8;
+	get_vector(&cam->pos, cam->pos, (double)delt * sing, v);
+	return (1);
+}
+
+#include <stdio.h>
 
 int main(int argc, char **argv)
 {
@@ -44,15 +55,23 @@ int main(int argc, char **argv)
 	if (argc != 2)
 		usage('f');
 	init(&wind, argv[argc - 1]);
-	render(&wind);
-	SDL_RenderPresent(wind.ren);
 	f = 1;
 	while (f)
 	{
 		while (SDL_PollEvent(&e) != 0 && f)
-			if (e.type == SDL_QUIT ||
-			(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
-				f = 0;
+		{
+			e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) ? (f = 0) : 0; 
+			if (e.type == SDL_KEYDOWN)
+			{
+				e.key.keysym.sym == SDLK_w ? cam_move(wind.cam, wind.cam->dir, 1) : 0;
+				e.key.keysym.sym == SDLK_s ? cam_move(wind.cam, wind.cam->dir, -1) : 0;
+				e.key.keysym.sym == SDLK_a ? cam_move(wind.cam, wind.cam->r, -1) : 0;
+				e.key.keysym.sym == SDLK_d ? cam_move(wind.cam, wind.cam->r, 1) : 0;
+				render(&wind);
+			}
+		}
 	}
+	SDL_DestroyRenderer(wind.ren);
+	SDL_Quit();
 	return (0);
 }

@@ -5,8 +5,6 @@
 #include "vector.h"
 #include <stdlib.h>
 
-#include <stdio.h>
-
 int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 {
 	double		dsc;
@@ -42,10 +40,9 @@ void		*read_sphere(int fd)
 
 	sphere = (t_sphere *)malloc(sizeof(t_sphere));
 	shape = (t_obj_3d *)malloc(sizeof(t_obj_3d));
-	read_vector_fild(&sphere->center, "\tcenter => ", fd);
+	read_vector_fild(&sphere->center, "\tpos => ", fd);
 	sphere->r = fmax(1, read_int_fild("\tr => ", 10, fd));
 	sphere->color = read_int_fild("\tcolor => ", 16, fd);
-	printf("%i\n",sphere->color);
 	shape->data = sphere;
 	shape->intersect = &sphere_intersect;
 	return (shape);
