@@ -23,7 +23,7 @@ int		cylinder_intersect(void *data, t_dvec3 ray, t_dvec3 eye, t_iparam *p)
 	abc[2] = dot_product(tmp[1], tmp[1]) - c->r * c->r;
 	d = abc[1] * abc[1] - 4.0 * abc[0] * abc[2];
 	if ((d) < 0 ||
-		(t = (-abc[1] - sqrt(d)) / (2.0 * abc[0])) <= 0.01 ||
+		(t = (-abc[1] - sqrt(d)) / (2.0 * abc[0])) <= 0.00001 ||
 		(p && p->t > 0 && p->t <= t))
 		return (0);
 	if (p)

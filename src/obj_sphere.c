@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   obj_sphere.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/02 18:58:26 by afokin            #+#    #+#             */
+/*   Updated: 2018/05/02 18:58:32 by afokin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "struct.h"
 #include "function.h"
@@ -16,13 +27,14 @@ int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	s = data;
 	dxd = dot_product(ray, ray);
 	get_vector(&ce, e, -1, s->center);
-	dsc = 4.0 * pow(dot_product(ray, ce), 2) - 4.0 * dxd * (dot_product(ce, ce) - s->r * s->r);
+	dsc = 4.0 * pow(dot_product(ray, ce), 2) -
+	4.0 * dxd * (dot_product(ce, ce) - s->r * s->r);
 	if (dsc < 0 ||
-	(t = (-2 * dot_product(ray, ce) - sqrt(fabs(dsc))) / (2.0 * dxd)) <= 0.001 ||
+	(t = (-2 * dot_product(ray, ce) - sqrt(fabs(dsc))) / (2 * dxd)) < 1e-6 ||
 	(p && p->t <= t && p->t >= 0))
 		return (0);
 	if (!p)
-		return(1);
+		return (1);
 	p->t = t;
 	get_vector(&p->i_point, e, t, ray);
 	get_vector(&p->normal, p->i_point, -1, s->center);

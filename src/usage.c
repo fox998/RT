@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"../lib/libft/libft.h"
-#include	<stdlib.h>
+#include "../lib/libft/libft.h"
+#include <stdlib.h>
 
 int		str_usage(char *str)
 {

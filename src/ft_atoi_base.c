@@ -33,8 +33,6 @@ static void	init_arr(char *arr)
 	arr[16] = 0;
 }
 
-#include <stdio.h>
-
 int			ft_atoi_base(const char *str, int str_base)
 {
 	char		arr[17];

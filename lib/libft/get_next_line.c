@@ -99,4 +99,3 @@ int				get_next_line(const int fd, char **line)
 	else
 		return (read_nl((tmp), line, -1, -1));
 }
-

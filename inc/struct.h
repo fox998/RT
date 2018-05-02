@@ -47,6 +47,8 @@ typedef struct			s_shading
 	double			h_dot_n;
 	double			phong;
 	double			lambert;
+	double			a_intens;
+	double			l_intens;
 }						t_shading;
 
 /*

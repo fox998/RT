@@ -56,19 +56,19 @@ int main(int argc, char **argv)
 		usage('f');
 	init(&wind, argv[argc - 1]);
 	f = 1;
+	render(&wind);
 	while (f)
 	{
 		while (SDL_PollEvent(&e) != 0 && f)
 		{
 			e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) ? (f = 0) : 0; 
-			if (e.type == SDL_KEYDOWN)
-			{
-				e.key.keysym.sym == SDLK_w ? cam_move(wind.cam, wind.cam->dir, 1) : 0;
-				e.key.keysym.sym == SDLK_s ? cam_move(wind.cam, wind.cam->dir, -1) : 0;
-				e.key.keysym.sym == SDLK_a ? cam_move(wind.cam, wind.cam->r, -1) : 0;
-				e.key.keysym.sym == SDLK_d ? cam_move(wind.cam, wind.cam->r, 1) : 0;
+			if (e.type == SDL_KEYDOWN &&
+			((e.key.keysym.sym == SDLK_w ? cam_move(wind.cam, wind.cam->dir, 1) : 0) ||
+			(e.key.keysym.sym == SDLK_s ? cam_move(wind.cam, wind.cam->dir, -1) : 0) ||
+			(e.key.keysym.sym == SDLK_a ? cam_move(wind.cam, wind.cam->r, -1) : 0) ||
+			(e.key.keysym.sym == SDLK_d ? cam_move(wind.cam, wind.cam->r, 1) : 0))
+			)
 				render(&wind);
-			}
 		}
 	}
 	SDL_DestroyRenderer(wind.ren);

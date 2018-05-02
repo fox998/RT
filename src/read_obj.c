@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-static void	free_mas(char **mas)
+static void		free_mas(char **mas)
 {
 	char **tmp;
 
@@ -30,7 +30,7 @@ static void	free_mas(char **mas)
 	free(mas);
 }
 
-void	read_vector_fild(void *fild_ptr, char *fild_name, int fd)
+void			read_vector_fild(void *fild_ptr, char *fild_name, int fd)
 {
 	char	**mas;
 	char	*line;
@@ -49,7 +49,7 @@ void	read_vector_fild(void *fild_ptr, char *fild_name, int fd)
 	free(line - ft_strlen(fild_name));
 }
 
-int	read_int_fild(char *fild_name, int base, int fd)
+int				read_int_fild(char *fild_name, int base, int fd)
 {
 	char	*line;
 	int		res;
@@ -63,7 +63,7 @@ int	read_int_fild(char *fild_name, int base, int fd)
 	return (res);
 }
 
-void		*read_cam(int fd)
+void			*read_cam(int fd)
 {
 	t_cam	*cam;
 

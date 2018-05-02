@@ -16,13 +16,8 @@
 #include "libft.h"
 #include <fcntl.h>
 
-static t_read	*arr_init()
+static t_read	*arr_init(t_read *arr, int arr_size)
 {
-	int		arr_size;
-	t_read	*arr;
-
-	arr_size = 6;
-	arr = (t_read *)malloc(sizeof(t_read) * (arr_size + 1));
 	arr[0].name = "camera";
 	arr[0].f = &read_cam;
 	arr[1].name = "sphere";
@@ -39,7 +34,6 @@ static t_read	*arr_init()
 	return (arr);
 }
 
-
 static void		add_obj(t_window *wind, t_read *obj, int fd)
 {
 	t_obj_3d	*new_3d_obj;
@@ -50,7 +44,8 @@ static void		add_obj(t_window *wind, t_read *obj, int fd)
 	if (ft_strncmp("cam", obj->name, 3) == 0)
 	{
 		wind->cam = obj->f(fd);
-		get_vector(&wind->cam->u,wind->cam->u, wind->h / (double)wind->w - 1.0, wind->cam->u);
+		get_vector(&wind->cam->u, wind->cam->u,
+		wind->h / (double)wind->w - 1.0, wind->cam->u);
 	}
 	else if (ft_strncmp("lig", obj->name, 3) == 0)
 	{
@@ -61,7 +56,9 @@ static void		add_obj(t_window *wind, t_read *obj, int fd)
 	else
 	{
 		new_3d_obj = obj->f(fd);
-		ft_lstadd((t_list **)&scn->obj, ft_lstnew(new_3d_obj, sizeof(t_obj_3d)));
+		ft_lstadd((t_list **)&scn->obj,
+		ft_lstnew(new_3d_obj, sizeof(t_obj_3d)));
+		free(new_3d_obj);
 	}
 }
 
@@ -80,17 +77,17 @@ static int		check_brackets(t_read *obj, int fd, t_window *wind)
 	return (0);
 }
 
-void		read_scene(char *path, void *wind)
+void			read_scene(char *path, void *wind)
 {
 	int		fd;
 	char	*line;
 	int		i;
 	int		l;
-	t_read	*arr;
+	t_read	arr[7];
 
 	if ((fd = open(path, O_RDONLY)) < 0)
 		usage('f');
-	arr = arr_init();
+	arr_init((t_read *)arr, 6);
 	((t_window *)wind)->scn->lit = 0;
 	((t_window *)wind)->cam = 0;
 	while ((l = num_line(fd, &line)) > 0)
@@ -101,8 +98,10 @@ void		read_scene(char *path, void *wind)
 			continue ;
 		}
 		i = 0;
-		while (arr[i].name && ft_strncmp(line, arr[i].name, ft_strlen(arr[i].name)))
+		while (arr[i].name && ft_strncmp(line,
+		arr[i].name, ft_strlen(arr[i].name)))
 			i++;
 		arr[i].name ? check_brackets(&arr[i], fd, wind) : sintax_usage(l);
+		free(line);
 	}
 }

@@ -1,53 +1,71 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/02 17:50:37 by afokin            #+#    #+#             */
+/*   Updated: 2018/05/02 17:50:43 by afokin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "struct.h"
 #include "my_sdl.h"
 #include "vector.h"
 
-static void		get_rey(t_cam *cam, t_dvec3 *ray, double *cam_cor)
+static void				get_rey(t_cam *cam, t_dvec3 *ray, double *c_cor)
 {
-	ray[0][0] = cam->dir[0] * 1.5 + cam->u[0] * cam_cor[1] + cam->r[0] * cam_cor[0];
-	ray[0][1] = cam->dir[1] * 1.5 + cam->u[1] * cam_cor[1] + cam->r[1] * cam_cor[0];
-	ray[0][2] = cam->dir[2] * 1.5 + cam->u[2] * cam_cor[1] + cam->r[2] * cam_cor[0];
+	ray[0][0] = cam->dir[0] * 1.5 + cam->u[0] * c_cor[1] + cam->r[0] * c_cor[0];
+	ray[0][1] = cam->dir[1] * 1.5 + cam->u[1] * c_cor[1] + cam->r[1] * c_cor[0];
+	ray[0][2] = cam->dir[2] * 1.5 + cam->u[2] * c_cor[1] + cam->r[2] * c_cor[0];
 }
 
-static unsigned int		shading(t_light *lights, t_color *color, t_iparam p, t_obj_3d **shepe)
+static void				dop(t_obj_3d *shepe,
+						t_shading *s, t_iparam p, t_light *lights)
 {
-	double		ambient_intens;
-	double		l_intens;
+	double		tmp;
+
+	if (!shepe)
+	{
+		get_vector(&s->h, lights->dir, 1, p.v);
+		norm_vector(&s->h);
+		s->h_dot_n = dot_product(s->h, p.normal);
+		tmp = fmax(0, dot_product(p.normal, lights->dir)) * s->l_intens;
+		s->lambert += tmp;
+		s->phong += ((tmp <= 0.0 ? 0 : pow(s->h_dot_n, 50.0))) * s->l_intens;
+	}
+}
+
+static unsigned int		shading(t_light *lights,
+						t_color *color, t_iparam p, t_obj_3d **shepe)
+{
 	t_shading	s;
 	int			i;
 
-	double tmp;
-
 	*color = *(t_color *)&p.color;
-	ambient_intens = 0;
+	s.a_intens = 0;
 	s.lambert = 0;
 	s.phong = 0;
 	while (lights)
 	{
-		l_intens = lights->intensity;
-		ambient_intens += (0.08 / (i + 1)) * l_intens;
+		s.l_intens = lights->intensity;
+		s.a_intens += (0.08 / (i + 1)) * s.l_intens;
 		i = 0;
-		while (shepe[i] && !shepe[i]->intersect(shepe[i]->data, lights->dir, p.i_point, NULL))
+		while (shepe[i] &&
+		!shepe[i]->intersect(shepe[i]->data, lights->dir, p.i_point, NULL))
 			i++;
-		if (!shepe[i])
-		{
-			get_vector(&s.h, lights->dir, 1, p.v);
-			norm_vector(&s.h);
-			s.h_dot_n = dot_product(s.h, p.normal);
-			tmp = fmax(0,dot_product(p.normal, lights->dir)) * l_intens;
-			s.lambert += tmp;
-			s.phong += (( tmp <= 0.0 ? 0 : pow(s.h_dot_n, 50.0))) * l_intens;
-		}
+		dop(shepe[i], &s, p, lights);
 		lights = lights->next;
 	}
-	color->r = fmin(0xFF, color->r * (ambient_intens + s.lambert) + s.phong * 0x8F);
-	color->g = fmin(0xFF, color->g * (ambient_intens + s.lambert) + s.phong * 0x8F);
-	color->b = fmin(0xFF, color->b * (ambient_intens + s.lambert) + s.phong * 0x8F);
-	return(*(unsigned int*)color);
+	color->r = fmin(0xFF, color->r * (s.a_intens + s.lambert) + s.phong * 0x8F);
+	color->g = fmin(0xFF, color->g * (s.a_intens + s.lambert) + s.phong * 0x8F);
+	color->b = fmin(0xFF, color->b * (s.a_intens + s.lambert) + s.phong * 0x8F);
+	return (*(unsigned int*)color);
 }
 
-static void		get_pixel_color(t_window *wind, double *cam_cor, t_obj_3d **shepe)
+static void				get_pixel_color(t_window *wind,
+						double *cam_cor, t_obj_3d **shepe)
 {
 	t_dvec3		vray;
 	t_iparam	p;
@@ -65,7 +83,7 @@ static void		get_pixel_color(t_window *wind, double *cam_cor, t_obj_3d **shepe)
 	SDL_SetRenderDrawColor(wind->ren, color.r, color.g, color.b, 0xFF);
 }
 
-void	render(void *w)
+void					render(void *w)
 {
 	int			x;
 	int			y;

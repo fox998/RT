@@ -1,10 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   obj_cone.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/02 19:03:26 by afokin            #+#    #+#             */
+/*   Updated: 2018/05/02 19:03:29 by afokin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "struct.h"
 #include "function.h"
 #include "vector.h"
 #include <math.h>
 #include <stdlib.h>
-
 
 int			cone_intersect(void *data, t_dvec3 ray, t_dvec3 eye, t_iparam *p)
 {
@@ -25,7 +35,7 @@ int			cone_intersect(void *data, t_dvec3 ray, t_dvec3 eye, t_iparam *p)
 	abc[2] = c->cos_a * dot_product(tmp[1], tmp[1]) - c->sin_a * dot[1] * dot[1];
 	abc[3] = abc[1] * abc[1] - 4.0 * abc[0] * abc[2];
 	if (abc[3] < 0 || 
-		(t = (-abc[1] - sqrt(abc[3])) / (2.0 * abc[0])) <= 0.01 ||
+		(t = (-abc[1] - sqrt(abc[3])) / (2.0 * abc[0])) <= 0.00001 ||
 		(p && p->t > 0 && p->t <= t))
 		return (0);
 	if (!p)

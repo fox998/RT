@@ -1,22 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector_fun.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/02 18:56:13 by afokin            #+#    #+#             */
+/*   Updated: 2018/05/02 18:56:20 by afokin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "vector.h"
 #include "function.h"
 #include <math.h>
 
-void		norm_vector(t_dvec3 *vec)
+void			norm_vector(t_dvec3 *vec)
 {
 	double		len;
 
 	len = (sqrt(vec[0][0] * vec[0][0] + vec[0][1] * vec[0][1] +
 	vec[0][2] * vec[0][2]));
 	if (len == 0.0)
-		return;
+		return ;
 	vec[0][0] /= len;
 	vec[0][1] /= len;
 	vec[0][2] /= len;
 }
 
-void		vector_product(t_dvec3 *prod, t_dvec3 a, t_dvec3 b)
+void			vector_product(t_dvec3 *prod, t_dvec3 a, t_dvec3 b)
 {
 	double	x;
 	double	y;
@@ -30,12 +41,12 @@ void		vector_product(t_dvec3 *prod, t_dvec3 a, t_dvec3 b)
 	(*prod)[2] = z;
 }
 
-double		dot_product(t_dvec3 a, t_dvec3 b)
+double			dot_product(t_dvec3 a, t_dvec3 b)
 {
 	return (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]);
 }
 
-void		get_vector(t_dvec3 *res_v, t_dvec3 a, double sing, t_dvec3 b)
+void			get_vector(t_dvec3 *res_v, t_dvec3 a, double sing, t_dvec3 b)
 {
 	t_dvec3	tmp;
 
