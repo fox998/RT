@@ -14,7 +14,7 @@
 # define FUNCTION_H
 
 /*
-*	USAGE
+**	USAGE
 */
 int			usage(char f);
 int			str_usage(char *str);
@@ -22,7 +22,7 @@ int			sintax_usage(int line);
 int			num_line(int fd, char **line);
 
 /*
-*	READ
+**	READ
 */
 void		*read_cam(int fd);
 void		*read_win(int fd);
@@ -38,7 +38,7 @@ void		read_vector_fild(void *fild_ptr, char *fild_name, int fd);
 int			read_int_fild(char *fild_name, int base, int fd);
 
 /*
-*	RENDER
+**	RENDER
 */
 void		render(void *wind);
 

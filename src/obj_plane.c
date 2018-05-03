@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   obj_plane.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/03 16:59:10 by afokin            #+#    #+#             */
+/*   Updated: 2018/05/03 16:59:13 by afokin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "struct.h"
 #include "function.h"
@@ -15,7 +26,7 @@ int			plane_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	double		vn;
 
 	plane = data;
-	if((vn = dot_product(ray, plane->n)) == 0.0)
+	if ((vn = dot_product(ray, plane->n)) == 0.0)
 		return (0);
 	get_vector(&ep, plane->plane_point, -1, e);
 	t = dot_product(ep, plane->n) / vn;

@@ -58,7 +58,8 @@ typedef struct			s_shading
 typedef	struct			s_obj_3d
 {
 	void		*data;
-	int			(*intersect)(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *param);
+	int			(*intersect)(void *data,
+				t_dvec3 ray, t_dvec3 e, t_iparam *param);
 }						t_obj_3d;
 
 typedef struct			s_sphere

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   obj_cylinder.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afokin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/03 17:00:13 by afokin            #+#    #+#             */
+/*   Updated: 2018/05/03 17:00:15 by afokin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "struct.h"
 #include "function.h"
@@ -5,13 +16,24 @@
 #include <stdlib.h>
 #include <math.h>
 
-int		cylinder_intersect(void *data, t_dvec3 ray, t_dvec3 eye, t_iparam *p)
+static void		dop(t_iparam *p, t_dvec3 *tmp, t_dvec3 eye, t_cylinder *c)
+{
+	get_vector(&p->v, eye, -1, p->i_point);
+	get_vector(&tmp[0], p->i_point, -1, c->pos);
+	get_vector(&tmp[0], c->pos, dot_product(c->dir, tmp[0]), c->dir);
+	get_vector(&p->normal, p->i_point, -1, tmp[0]);
+	norm_vector(&p->v);
+	norm_vector(&p->normal);
+	p->color = c->color;
+}
+
+int				cylinder_intersect(void *data,
+				t_dvec3 ray, t_dvec3 eye, t_iparam *p)
 {
 	t_dvec3		tmp[2];
 	t_dvec3		dp;
 	double		t;
-	double		d;
-	double		abc[3];
+	double		abc[4];
 	t_cylinder	*c;
 
 	c = data;
@@ -21,27 +43,20 @@ int		cylinder_intersect(void *data, t_dvec3 ray, t_dvec3 eye, t_iparam *p)
 	get_vector(&tmp[1], dp, -1 * dot_product(dp, c->dir), c->dir);
 	abc[1] = 2.0 * dot_product(tmp[0], tmp[1]);
 	abc[2] = dot_product(tmp[1], tmp[1]) - c->r * c->r;
-	d = abc[1] * abc[1] - 4.0 * abc[0] * abc[2];
-	if ((d) < 0 ||
-		(t = (-abc[1] - sqrt(d)) / (2.0 * abc[0])) <= 0.00001 ||
+	abc[3] = abc[1] * abc[1] - 4.0 * abc[0] * abc[2];
+	if ((abc[3]) < 0 ||
+		(t = (-abc[1] - sqrt(abc[3])) / (2.0 * abc[0])) <= 0.00001 ||
 		(p && p->t > 0 && p->t <= t))
 		return (0);
-	if (p)
-	{
-		p->t = t;
-		get_vector(&p->i_point, eye, p->t, ray);
-		get_vector(&p->v, eye, -1, p->i_point);
-		get_vector(&tmp[0], p->i_point, -1, c->pos);
-		get_vector(&tmp[0], c->pos, dot_product(c->dir, tmp[0]), c->dir);
-		get_vector(&p->normal, p->i_point, -1, tmp[0]);
-		norm_vector(&p->v);
-		norm_vector(&p->normal);
-		p->color = c->color;
-	}
+	if (!p)
+		return (1);
+	p->t = t;
+	get_vector(&p->i_point, eye, p->t, ray);
+	dop(p, &tmp[0], eye, c);
 	return (1);
 }
 
-void	*read_cylinder(int fd)
+void			*read_cylinder(int fd)
 {
 	t_cylinder	*cylinder;
 	t_obj_3d	*shape;
@@ -55,5 +70,5 @@ void	*read_cylinder(int fd)
 	shape = (t_obj_3d *)malloc(sizeof(t_obj_3d));
 	shape->data = cylinder;
 	shape->intersect = &cylinder_intersect;
-	return(shape);
+	return (shape);
 }

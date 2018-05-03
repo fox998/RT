@@ -15,14 +15,14 @@
 #include "struct.h"
 #include "my_sdl.h"
 
-static void			init(t_window *wind, char *path)
+static void		init(t_window *wind, char *path)
 {
 	int	i;
 
 	i = SDL_Init(SDL_INIT_VIDEO);
 	wind->w = 840;
 	wind->h = 840;
-	wind->win = SDL_CreateWindow("Hello World!", SDL_WINDOWPOS_UNDEFINED,
+	wind->win = SDL_CreateWindow("RTv1", SDL_WINDOWPOS_UNDEFINED,
 	SDL_WINDOWPOS_UNDEFINED, wind->w, wind->h, SDL_WINDOW_SHOWN);
 	wind->ren = SDL_CreateRenderer(wind->win, -1, SDL_RENDERER_ACCELERATED);
 	if (i || !wind->win || !wind->ren)
@@ -35,7 +35,7 @@ static void			init(t_window *wind, char *path)
 	get_scene(wind);
 }
 
-static int		cam_move(t_cam *cam, t_dvec3 v, int sing)
+static int		c(t_cam *cam, t_dvec3 v, int sing)
 {
 	double		delt;
 
@@ -44,9 +44,7 @@ static int		cam_move(t_cam *cam, t_dvec3 v, int sing)
 	return (1);
 }
 
-#include <stdio.h>
-
-int main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	t_window	wind;
 	int			f;
@@ -58,19 +56,18 @@ int main(int argc, char **argv)
 	f = 1;
 	render(&wind);
 	while (f)
-	{
 		while (SDL_PollEvent(&e) != 0 && f)
 		{
-			e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) ? (f = 0) : 0; 
+			e.type == SDL_QUIT ||
+			(e.type == SDL_KEYDOWN &&
+			e.key.keysym.sym == SDLK_ESCAPE) ? (f = 0) : 0;
 			if (e.type == SDL_KEYDOWN &&
-			((e.key.keysym.sym == SDLK_w ? cam_move(wind.cam, wind.cam->dir, 1) : 0) ||
-			(e.key.keysym.sym == SDLK_s ? cam_move(wind.cam, wind.cam->dir, -1) : 0) ||
-			(e.key.keysym.sym == SDLK_a ? cam_move(wind.cam, wind.cam->r, -1) : 0) ||
-			(e.key.keysym.sym == SDLK_d ? cam_move(wind.cam, wind.cam->r, 1) : 0))
-			)
+			((e.key.keysym.sym == SDLK_w ? c(wind.cam, wind.cam->dir, 1) : 0) ||
+			(e.key.keysym.sym == SDLK_s ? c(wind.cam, wind.cam->dir, -1) : 0) ||
+			(e.key.keysym.sym == SDLK_a ? c(wind.cam, wind.cam->r, -1) : 0) ||
+			(e.key.keysym.sym == SDLK_d ? c(wind.cam, wind.cam->r, 1) : 0)))
 				render(&wind);
 		}
-	}
 	SDL_DestroyRenderer(wind.ren);
 	SDL_Quit();
 	return (0);

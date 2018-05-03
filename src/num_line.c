@@ -15,10 +15,10 @@
 int		num_line(int fd, char **line)
 {
 	static int num = 0;
-	
+
 	if (get_next_line(fd, line) < 1)
 		return (-1);
 	if (*line)
-	num++;
+		num++;
 	return (num);
 }
