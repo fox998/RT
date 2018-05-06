@@ -13,9 +13,8 @@
 #include "struct.h"
 #include "function.h"
 #include "vector.h"
+#include <math.h>
 #include <stdlib.h>
-
-#include <stdio.h>
 
 int			plane_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 {
@@ -26,7 +25,7 @@ int			plane_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	double		vn;
 
 	plane = data;
-	if ((vn = dot_product(ray, plane->n)) == 0.0)
+	if ((vn = (dot_product(ray, plane->n))) == 0.0)
 		return (0);
 	get_vector(&ep, plane->plane_point, -1, e);
 	t = dot_product(ep, plane->n) / vn;
@@ -36,7 +35,7 @@ int			plane_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	if (!p)
 		return (1);
 	get_vector(&p->i_point, e, t, ray);
-	get_vector(&p->normal, plane->n, 0, plane->n);
+	get_vector(&p->normal, plane->n, vn < 0 ? 0 : -2, plane->n);
 	get_vector(&p->v, e, -1, p->i_point);
 	norm_vector(&p->v);
 	p->t = t;

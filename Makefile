@@ -34,8 +34,7 @@ SRC :=	main.c\
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
-OBJ_FLAG = 
-#-Wextra -Werror -Wall
+OBJ_FLAG = -Wextra -Werror -Wall
 
 SDL_FLAG :=
 

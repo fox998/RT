@@ -44,6 +44,19 @@ static int		c(t_cam *cam, t_dvec3 v, int sing)
 	return (1);
 }
 
+static int	check_k(SDL_Event e, t_window *wind)
+{
+	if (e.type == SDL_KEYDOWN &&
+	((e.key.keysym.sym == SDLK_w ? c(wind->cam, wind->cam->dir, 1) : 0) ||
+	(e.key.keysym.sym == SDLK_s ? c(wind->cam, wind->cam->dir, -1) : 0) ||
+	(e.key.keysym.sym == SDLK_a ? c(wind->cam, wind->cam->r, -1) : 0) ||
+	(e.key.keysym.sym == SDLK_d ? c(wind->cam, wind->cam->r, 1) : 0) ||
+	(e.key.keysym.sym == SDLK_SPACE ? c(wind->cam, wind->cam->u, 1) : 0) ||
+	(e.key.keysym.sym == SDLK_LCTRL ? c(wind->cam, wind->cam->u, -1) : 0)))
+		return (1);
+	return (0);
+}
+
 int				main(int argc, char **argv)
 {
 	t_window	wind;
@@ -58,14 +71,9 @@ int				main(int argc, char **argv)
 	while (f)
 		while (SDL_PollEvent(&e) != 0 && f)
 		{
-			e.type == SDL_QUIT ||
-			(e.type == SDL_KEYDOWN &&
+			e.type == SDL_QUIT || (e.type == SDL_KEYDOWN &&
 			e.key.keysym.sym == SDLK_ESCAPE) ? (f = 0) : 0;
-			if (e.type == SDL_KEYDOWN &&
-			((e.key.keysym.sym == SDLK_w ? c(wind.cam, wind.cam->dir, 1) : 0) ||
-			(e.key.keysym.sym == SDLK_s ? c(wind.cam, wind.cam->dir, -1) : 0) ||
-			(e.key.keysym.sym == SDLK_a ? c(wind.cam, wind.cam->r, -1) : 0) ||
-			(e.key.keysym.sym == SDLK_d ? c(wind.cam, wind.cam->r, 1) : 0)))
+			if (check_k(e, &wind))
 				render(&wind);
 		}
 	SDL_DestroyRenderer(wind.ren);

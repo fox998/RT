@@ -19,7 +19,6 @@
 void		*read_light(int fd)
 {
 	t_light		*light;
-	int			tmp;
 
 	light = (t_light *)malloc(sizeof(t_light));
 	read_vector_fild(&light->dir, "\tdir => ", fd);

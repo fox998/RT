@@ -50,7 +50,7 @@ static unsigned int		shading(t_light *lights,
 	while (lights)
 	{
 		s.l_intens = lights->intensity;
-		s.a_intens += (0.08 / (i + 1)) * s.l_intens;
+		s.a_intens = fmax((0.08) * s.l_intens, s.a_intens);
 		i = 0;
 		while (shepe[i] &&
 		!shepe[i]->intersect(shepe[i]->data, lights->dir, p.i_point, NULL))
