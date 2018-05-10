@@ -146,8 +146,19 @@ typedef struct			s_window
 	t_cam		*cam;
 	void		*ren;
 	t_scene		*scn;
+	void		*tex_ptr;
+	unsigned int		*pixs;
+	int			pitch;
 	int			w;
 	int			h;
 }						t_window;
+
+typedef struct			s_thread
+{
+	void		*thread;
+	double		*x_arr;
+	t_window	*wind;
+	int		i;
+}						t_thread;
 
 #endif

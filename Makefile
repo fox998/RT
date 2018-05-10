@@ -34,7 +34,8 @@ SRC :=	main.c\
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
-OBJ_FLAG = -Wextra -Werror -Wall
+OBJ_FLAG = 
+#-Wextra -Werror -Wall
 
 SDL_FLAG :=
 
@@ -44,7 +45,7 @@ else
 	SDL_FLAG = -framework SDL2 -F /Library/Frameworks/
 endif
 
-LIN_FLAG = $(SDL_FLAG) -lm
+LIN_FLAG = $(SDL_FLAG) -lm -lpthread
 
 CC = gcc
 
@@ -79,4 +80,4 @@ relib:
 
 re: fclean all
 
-reall: libfclean re
+reall: relib re

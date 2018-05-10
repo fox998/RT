@@ -3,6 +3,7 @@
 		"sdl.h": "c",
 		"stdio.h": "c",
 		"function.h": "c",
-		"struct.h": "c"
+		"struct.h": "c",
+		"libft.h": "c"
 	}
 }

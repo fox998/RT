@@ -14,7 +14,9 @@
 # define MY_SDL_H
 # ifdef __APPLE__
 #  include <SDL.h>
+#  include <SDL_thread.h>
 # else
 #  include <SDL2/SDL.h>
+#  include <SDL2/SDL_thread.h>
 # endif
 #endif
