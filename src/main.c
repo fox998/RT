@@ -25,7 +25,7 @@ static void		init(t_window *wind, char *path)
 	wind->win = SDL_CreateWindow("RTv1", SDL_WINDOWPOS_UNDEFINED,
 	SDL_WINDOWPOS_UNDEFINED, wind->w, wind->h, SDL_WINDOW_SHOWN);
 	wind->ren = SDL_CreateRenderer(wind->win, -1, SDL_RENDERER_ACCELERATED);
-	wind->tex_ptr = SDL_CreateTexture(wind->ren, SDL_PIXELFORMAT_RGBA32,
+	wind->tex_ptr = SDL_CreateTexture(wind->ren, SDL_PIXELFORMAT_ARGB8888,
 					SDL_TEXTUREACCESS_STREAMING,
 					wind->w, wind->h);
 	if (i || !wind->win || !wind->ren)
@@ -59,6 +59,8 @@ static int	check_k(SDL_Event e, t_window *wind)
 		return (1);
 	return (0);
 }
+
+#include <stdio.h>
 
 int				main(int argc, char **argv)
 {
