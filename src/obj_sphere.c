@@ -30,7 +30,8 @@ int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	dsc = 4.0 * pow(dot_product(ray, ce), 2) -
 	4.0 * dxd * (dot_product(ce, ce) - s->r * s->r);
 	if (dsc < 0 ||
-	(t = (-2 * dot_product(ray, ce) - sqrt(fabs(dsc))) / (2 * dxd)) < 1e-6 ||
+	((t = (-2 * dot_product(ray, ce) - sqrt(fabs(dsc))) / (2 * dxd)) < 1e-6 &&
+	(t = (-2 * dot_product(ray, ce) + sqrt(fabs(dsc))) / (2 * dxd)) < 1e-6) ||
 	(p && p->t <= t && p->t >= 0))
 		return (0);
 	if (!p)

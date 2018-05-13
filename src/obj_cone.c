@@ -52,7 +52,8 @@ int				cone_intersect(void *data,
 	abc[1] = 2 * (c->cos_a * dot_product(m[0], m[1]) - c->sin_a * d[0] * d[1]);
 	abc[2] = c->cos_a * dot_product(m[1], m[1]) - c->sin_a * d[1] * d[1];
 	if ((abc[3] = abc[1] * abc[1] - 4.0 * abc[0] * abc[2]) < 0 ||
-		(t = (-abc[1] - sqrt(abc[3])) / (2.0 * abc[0])) <= 0.00001 ||
+		((t = (-abc[1] - sqrt(abc[3])) / (2.0 * abc[0])) <= 0.00001 &&
+		(t = (-abc[1] + sqrt(abc[3])) / (2.0 * abc[0])) <= 0.00001) ||
 		(p && p->t > 0 && p->t <= t))
 		return (0);
 	if (!p)

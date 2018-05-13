@@ -45,7 +45,8 @@ int				cylinder_intersect(void *data,
 	abc[2] = dot_product(tmp[1], tmp[1]) - c->r * c->r;
 	abc[3] = abc[1] * abc[1] - 4.0 * abc[0] * abc[2];
 	if ((abc[3]) < 0 || (abc[0] == 0 && abc[1] == 0) ||
-		(t = (-abc[1] - sqrt(abc[3])) / (2.0 * abc[0])) <= 0.00001 ||
+		((t = (-abc[1] - sqrt(abc[3])) / (2.0 * abc[0])) <= 0.00001 &&
+		(t = (-abc[1] + sqrt(abc[3])) / (2.0 * abc[0])) <= 0.00001) ||
 		(p && p->t > 0 && p->t <= t))
 		return (0);
 	if (!p)

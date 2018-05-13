@@ -54,7 +54,7 @@ static void				shading(t_light *lights,
 	while (lights)
 	{
 		s.l_intens = lights->intensity;
-		s.a_intens = fmax((0.08) * s.l_intens, s.a_intens);
+		s.a_intens = fmax((0.15) * s.l_intens, s.a_intens);
 		i = 0;
 		while (shepe[i] &&
 		!shepe[i]->intersect(shepe[i]->data, lights->dir, p.i_point, NULL))
@@ -74,15 +74,19 @@ static unsigned int		get_pixel_color(t_window *wind,
 	t_iparam	p;
 	t_color		color;
 	int			i;
+	int			num;
+
 
 	get_rey(wind->cam, &vray, (double *)cam_cor);
 	norm_vector(&vray);
 	*((unsigned int *)&color) = 0;
 	i = -1;
 	p.t = -1;
+	num = 0;
 	while (shepe[++i])
-		if (shepe[i][0].intersect(shepe[i][0].data, vray, wind->cam->pos, &p))
-			shading(wind->scn->lit, &color, p, shepe);
+		num += shepe[i][0].intersect(shepe[i][0].data, vray, wind->cam->pos, &p);
+	if (num)
+		shading(wind->scn->lit, &color, p, shepe);
 	return (*(unsigned int *)&color);
 }
 

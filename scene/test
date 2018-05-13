@@ -4,18 +4,12 @@ camera
 	dir => 0, 1, 0
 }
 
-sphere
+cylinder
 {
-	pos => 0, -3 , 0
-	r => 3
-	color => 000099
-}
-
-plane
-{
-	dir => 0, -1, 0
-	pos => 0, 6, 0
-	color => aa0000
+	pos => 0, 0, 0
+	dir => 0, 0, 1
+	r => 2
+	color => 00aa00
 }
 
 plane
@@ -28,6 +22,6 @@ plane
 
 light
 {
-	dir => 0, -1, 10
+	dir => 1, 5, 5
 	intensity => 50
 }
