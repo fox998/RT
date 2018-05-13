@@ -110,8 +110,6 @@ int		thread_f(void *data)
 	return (0);
 }
 
-#include <stdlib.h>
-
 void					render(void *w)
 {
 	int			y;

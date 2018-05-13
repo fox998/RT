@@ -6,22 +6,35 @@ camera
 
 cylinder
 {
+<<<<<<< HEAD
 	pos => 0, 0, 0
 	dir => 0, 0, 1
 	r => 2
 	color => 00aa00
 }
+=======
+	pos => -3, 0 , -3
+	r => 3
+	color => 000099
+}
 
-plane
+>>>>>>> b2f653d51cf71faf41a7592e4479826dcbd56f78
+
+cylinder
 {
-	dir => 0, 0, 1
-	pos => 0, 0, -3
-	color => 00bb00
+	pos => 3, 0, -3
+	dir => 0, 1, 0
+	r => 2
+	color => 00aa00
 }
 
 
 light
 {
+<<<<<<< HEAD
 	dir => 1, 5, 5
+=======
+	dir => 0, -1, 0
+>>>>>>> b2f653d51cf71faf41a7592e4479826dcbd56f78
 	intensity => 50
 }
