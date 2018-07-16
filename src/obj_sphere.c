@@ -28,19 +28,19 @@ void		sphere_maping(t_dvec3 center, t_dvec3 point, double *u, double *v)
 	*v = 0.5 + asin(d[1]) / M_PI;
 }
 
-unsigned int		get_color(void *txr, t_dvec3 center, t_dvec3 point)
+unsigned int		get_color(SDL_Surface *t, t_dvec3 center, t_dvec3 point)
 {
 	double				u;
 	double				v;
 	int					x;
 	int					y;
-	SDL_Surface			*t;
+	unsigned int				*ptr;
 
-	t = txr;
 	sphere_maping(center, point, &u, &v);
 	x = u * t->w;
 	y = v * t->h;
-	return ((unsigned int *) t->pixels)[y * t->w + x];
+	ptr = t->pixels;
+	return ptr[y * t->w + x];
 }
 
 int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
@@ -50,7 +50,9 @@ int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	double		t;
 	t_dvec3		ce;
 	t_sphere	*s;
+	t_obj_3d	*obj;
 
+	obj = data;
 	s = data;
 	dxd = dot_product(ray, ray);
 	get_vector(&ce, e, -1, s->center);
@@ -69,7 +71,7 @@ int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	get_vector(&p->v, e, -1, p->i_point);
 	norm_vector(&p->v);
 	norm_vector(&p->normal);
-	p->color = s->color;
+	p->color =  get_color(p->txr, s->center, p->i_point);
 	return (1);
 }
 

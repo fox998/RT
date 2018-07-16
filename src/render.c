@@ -83,8 +83,11 @@ static unsigned int		get_pixel_color(t_window *wind,
 	i = -1;
 	p.t = -1;
 	num = 0;
+	p.txr = wind->txr;
 	while (shepe[++i])
+	{
 		num += shepe[i][0].intersect(shepe[i][0].data, vray, wind->cam->pos, &p);
+	}
 	if (num)
 		shading(wind->scn->lit, &color, p, shepe);
 	return (*(unsigned int *)&color);

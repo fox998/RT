@@ -4,37 +4,16 @@ camera
 	dir => 0, 1, 0
 }
 
-cylinder
+sphere
 {
-<<<<<<< HEAD
-	pos => 0, 0, 0
-	dir => 0, 0, 1
-	r => 2
-	color => 00aa00
-}
-=======
-	pos => -3, 0 , -3
+	pos => -2, -3 , 1
 	r => 3
 	color => 000099
-}
-
->>>>>>> b2f653d51cf71faf41a7592e4479826dcbd56f78
-
-cylinder
-{
-	pos => 3, 0, -3
-	dir => 0, 1, 0
-	r => 2
-	color => 00aa00
 }
 
 
 light
 {
-<<<<<<< HEAD
-	dir => 1, 5, 5
-=======
-	dir => 0, -1, 0
->>>>>>> b2f653d51cf71faf41a7592e4479826dcbd56f78
+	dir => 0, -5, 2
 	intensity => 50
 }

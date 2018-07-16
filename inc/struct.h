@@ -37,6 +37,7 @@ typedef struct			s_intersect_param
 	t_dvec3			normal;
 	t_dvec3			v;
 	double			t;
+	void			*txr;
 	unsigned int	color;
 }						t_iparam;
 

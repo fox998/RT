@@ -75,6 +75,7 @@ int				main(int argc, char **argv)
 	render(&wind);
 	SDL_Surface *txr;
 	txr =  SDL_LoadBMP("Stonewall.bmp");
+	txr = SDL_ConvertSurfaceFormat(txr, SDL_PIXELFORMAT_ARGB8888, 0);
 	int a = SDL_LockSurface(txr);
 	wind.txr = txr;
 	while (f)
