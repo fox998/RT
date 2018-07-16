@@ -58,6 +58,7 @@ typedef struct			s_shading
 typedef	struct			s_obj_3d
 {
 	void		*data;
+	void		*txr;
 	int			(*intersect)(void *data,
 				t_dvec3 ray, t_dvec3 e, t_iparam *param);
 }						t_obj_3d;
@@ -151,6 +152,7 @@ typedef struct			s_window
 	int			pitch;
 	int			w;
 	int			h;
+	void		*txr;
 }						t_window;
 
 typedef struct			s_thread

@@ -15,6 +15,33 @@
 #include "math.h"
 #include "vector.h"
 #include <stdlib.h>
+#include "my_sdl.h"
+
+void		sphere_maping(t_dvec3 center, t_dvec3 point, double *u, double *v)
+{
+	t_dvec3		d;
+
+	get_vector(&d, point, -1, center);
+	norm_vector(&d);
+
+	*u = 0.5 + atan2(d[2], d[0]) / (M_PI * 2);
+	*v = 0.5 + asin(d[1]) / M_PI;
+}
+
+unsigned int		get_color(void *txr, t_dvec3 center, t_dvec3 point)
+{
+	double				u;
+	double				v;
+	int					x;
+	int					y;
+	SDL_Surface			*t;
+
+	t = txr;
+	sphere_maping(center, point, &u, &v);
+	x = u * t->w;
+	y = v * t->h;
+	return ((unsigned int *) t->pixels)[y * t->w + x];
+}
 
 int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 {

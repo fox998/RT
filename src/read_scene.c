@@ -56,6 +56,7 @@ static void		add_obj(t_window *wind, t_read *obj, int fd)
 	else
 	{
 		new_3d_obj = obj->f(fd);
+		new_3d_obj->txr = wind->txr;
 		ft_lstadd((t_list **)&scn->obj,
 		ft_lstnew(new_3d_obj, sizeof(t_obj_3d)));
 		free(new_3d_obj);

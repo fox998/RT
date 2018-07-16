@@ -73,6 +73,10 @@ int				main(int argc, char **argv)
 	init(&wind, argv[argc - 1]);
 	f = 1;
 	render(&wind);
+	SDL_Surface *txr;
+	txr =  SDL_LoadBMP("Stonewall.bmp");
+	int a = SDL_LockSurface(txr);
+	wind.txr = txr;
 	while (f)
 		while (SDL_PollEvent(&e) != 0 && f)
 		{
