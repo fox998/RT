@@ -13,6 +13,17 @@
 #ifndef FUNCTION_H
 # define FUNCTION_H
 
+
+/*
+**	TEXTURE
+*/
+
+#define     SPHERE_CORD     0
+#define     CYLINDER_CORD   1
+
+unsigned int		texture_mapping(void *txr, double *center, double *point, int cord_flag, double *dir);
+
+
 /*
 **	USAGE
 */

@@ -24,7 +24,7 @@ static void		dop(t_iparam *p, t_dvec3 *tmp, t_dvec3 eye, t_cylinder *c)
 	get_vector(&p->normal, p->i_point, -1, tmp[0]);
 	norm_vector(&p->v);
 	norm_vector(&p->normal);
-	p->color = c->color;
+	p->color = texture_mapping(p->txr, c->pos, p->i_point, CYLINDER_CORD, c->dir);
 }
 
 int				cylinder_intersect(void *data,

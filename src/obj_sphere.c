@@ -15,33 +15,6 @@
 #include "math.h"
 #include "vector.h"
 #include <stdlib.h>
-#include "my_sdl.h"
-
-void		sphere_maping(t_dvec3 center, t_dvec3 point, double *u, double *v)
-{
-	t_dvec3		d;
-
-	get_vector(&d, point, -1, center);
-	norm_vector(&d);
-
-	*u = 0.5 + atan2(d[2], d[0]) / (M_PI * 2);
-	*v = 0.5 + asin(d[1]) / M_PI;
-}
-
-unsigned int		get_color(SDL_Surface *t, t_dvec3 center, t_dvec3 point)
-{
-	double				u;
-	double				v;
-	int					x;
-	int					y;
-	unsigned int				*ptr;
-
-	sphere_maping(center, point, &u, &v);
-	x = u * t->w;
-	y = v * t->h;
-	ptr = t->pixels;
-	return ptr[y * t->w + x];
-}
 
 int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 {
@@ -71,7 +44,7 @@ int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	get_vector(&p->v, e, -1, p->i_point);
 	norm_vector(&p->v);
 	norm_vector(&p->normal);
-	p->color =  get_color(p->txr, s->center, p->i_point);
+	p->color =  texture_mapping(p->txr, s->center, p->i_point, SPHERE_CORD, 0);
 	return (1);
 }
 

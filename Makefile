@@ -30,7 +30,8 @@ SRC :=	main.c\
 		obj_light.c\
 		obj_plane.c\
 		obj_cylinder.c\
-		obj_cone.c
+		obj_cone.c\
+		mapping.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
