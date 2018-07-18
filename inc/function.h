@@ -22,6 +22,7 @@
 #define     CYLINDER_CORD   1
 
 unsigned int		texture_mapping(void *txr, double *center, double *point, int cord_flag, double *dir);
+unsigned int		skybox_mapping(double *dir);
 
 
 /*

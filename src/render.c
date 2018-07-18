@@ -13,7 +13,7 @@
 #include "struct.h"
 #include "my_sdl.h"
 #include "vector.h"
-
+#include "function.h"
 #include <stdio.h>
 #include "libft.h"
 
@@ -79,7 +79,6 @@ static unsigned int		get_pixel_color(t_window *wind,
 
 	get_rey(wind->cam, &vray, (double *)cam_cor);
 	norm_vector(&vray);
-	*((unsigned int *)&color) = 0;
 	i = -1;
 	p.t = -1;
 	num = 0;
@@ -90,6 +89,8 @@ static unsigned int		get_pixel_color(t_window *wind,
 	}
 	if (num)
 		shading(wind->scn->lit, &color, p, shepe);
+	else
+		*((unsigned int *)&color) = skybox_mapping(vray);
 	return (*(unsigned int *)&color);
 }
 

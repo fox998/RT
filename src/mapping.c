@@ -18,16 +18,22 @@ void		sphere_cord(double *center, double *point, double *u, double *v)
 void		cylinder_cord(double *center, double *point, double *u, double *v, int h, double *dir )
 {
 	t_dvec3		d;
+	t_dvec3		d2;
+	t_dvec3		r = {0 , 1, 0};
+	double		h2;
 
-	get_vector(&d, point, -1, center);
-    d[2] = 0;
+	//get_vector(&d, point, -1, center);
+	get_vector(&d2, point, -1, center);
+	h2 = fabs(dot_product(dir, d2));
+	get_vector(&d2, center, dot_product(dir, d2), dir);
+	get_vector(&d, point, -1, d2);
 	norm_vector(&d);
-	get_vector(&tmp[0], p->i_point, -1, c->pos);
-	get_vector(&tmp[0], c->pos, dot_product(c->dir, tmp[0]), c->dir);
-	get_vector(&p->normal, p->i_point, -1, tmp[0]);
+	vector_product(&d2, dir, r);
+	norm_vector(&d2);
 
-	*u = 0.5 + atan2(d[1], d[0]) / (M_PI * 2);
-	*v = fabs(point[2] - center[2])/5 - (int)fabs(point[2] - center[2]) / 5;//0.5 + sin((point[2] - center[2]) * 0.25) / 2;
+	//*u = 0.5 + atan2(d[1], d[0]) / (M_PI * 2);
+	*u = 0.5 + acos(dot_product(d, d2)) / (M_PI * 2);
+	*v = h2/10 - (int)h2/ 10;//0.5 + sin((point[2] - center[2]) * 0.25) / 2;
 }
 
 unsigned int		texture_mapping(void *txr, double *center, double *point, int cord_flag, double *dir)
@@ -48,4 +54,156 @@ unsigned int		texture_mapping(void *txr, double *center, double *point, int cord
 	y = v * t->h;
 	ptr = t->pixels;
 	return ptr[y * t->w + x];
+}
+
+void convert_xyz_to_cube_uv(float x, float y, float z, float *u, float *v)
+{
+  float absX = fabs(x);
+  float absY = fabs(y);
+  float absZ = fabs(z);
+  
+  int isXPositive = x > 0 ? 1 : 0;
+  int isYPositive = y > 0 ? 1 : 0;
+  int isZPositive = z > 0 ? 1 : 0;
+  
+	int index;
+
+  float maxAxis, uc, vc;
+  
+  // POSITIVE X
+  if (isXPositive && absX >= absY && absX >= absZ) {
+    // u (0 to 1) goes from +z to -z
+    // v (0 to 1) goes from -y to +y
+    maxAxis = absX;
+    uc = -z;
+    vc = y;
+    index = 0;
+  }
+  // NEGATIVE X
+  if (!isXPositive && absX >= absY && absX >= absZ) {
+    // u (0 to 1) goes from -z to +z
+    // v (0 to 1) goes from -y to +y
+    maxAxis = absX;
+    uc = z;
+    vc = y;
+    index = 1;
+  }
+  // POSITIVE Y
+  if (isYPositive && absY >= absX && absY >= absZ) {
+    // u (0 to 1) goes from -x to +x
+    // v (0 to 1) goes from +z to -z
+    maxAxis = absY;
+    uc = x;
+    vc = -z;
+    index = 2;
+  }
+  // NEGATIVE Y
+  if (!isYPositive && absY >= absX && absY >= absZ) {
+    // u (0 to 1) goes from -x to +x
+    // v (0 to 1) goes from -z to +z
+    maxAxis = absY;
+    uc = x;
+    vc = z;
+    index = 3;
+  }
+  // POSITIVE Z
+  if (isZPositive && absZ >= absX && absZ >= absY) {
+    // u (0 to 1) goes from -x to +x
+    // v (0 to 1) goes from -y to +y
+    maxAxis = absZ;
+    uc = x;
+    vc = y;
+    index = 4;
+  }
+  // NEGATIVE Z
+  if (!isZPositive && absZ >= absX && absZ >= absY) {
+    // u (0 to 1) goes from +x to -x
+    // v (0 to 1) goes from -y to +y
+    maxAxis = absZ;
+    uc = -x;
+    vc = y;
+    index = 5;
+  }
+
+  // Convert range from -1 to 1 to 0 to 1
+  *u = 0.5f * (uc / maxAxis + 1.0f);
+  *v = 0.5f * (vc / maxAxis + 1.0f);
+}
+
+
+unsigned int		skybox_mapping(double *dir)
+{
+	float absX = fabs(dir[0]);
+	float absY = fabs(dir[1]);
+	float absZ = fabs(dir[2]);
+  
+  int isXPositive = dir[0] > 0 ? 1 : 0;
+  int isYPositive = dir[1] > 0 ? 1 : 0;
+  int isZPositive = dir[2] > 0 ? 1 : 0;
+  
+	//int index;
+
+  //float maxAxis, uc, vc;
+  
+  // POSITIVE X
+  if (isXPositive && absX >= absY && absX >= absZ) {
+    // u (0 to 1) goes from +z to -z
+    // v (0 to 1) goes from -y to +y
+    //maxAxis = absX;
+    //uc = -dir[2];
+    //vc = dir[1];
+    //index = 0;
+	return 0x88;
+  }
+  // NEGATIVE X
+  if (!isXPositive && absX >= absY && absX >= absZ) {
+    // u (0 to 1) goes from -z to +z
+    // v (0 to 1) goes from -y to +y
+    //maxAxis = absX;
+    //uc = dir[2];
+    //vc = dir[1];
+    //index = 1;
+	return 0xFF;
+  }
+  // POSITIVE Y
+  if (isYPositive && absY >= absX && absY >= absZ) {
+    // u (0 to 1) goes from -x to +x
+    // v (0 to 1) goes from +z to -z
+    //maxAxis = absY;
+    //uc = dir[0];
+    //vc = -dir[2];
+    //index = 2;
+	return 0x8800;
+  }
+  // NEGATIVE Y
+  if (!isYPositive && absY >= absX && absY >= absZ) {
+    // u (0 to 1) goes from -x to +x
+    // v (0 to 1) goes from -z to +z
+    //maxAxis = absY;
+    //uc = dir[0];
+    //vc = dir[2];
+    //index = 3;
+	return 0xFF00;
+  }
+  // POSITIVE Z
+  if (isZPositive && absZ >= absX && absZ >= absY) {
+    // u (0 to 1) goes from -x to +x
+    // v (0 to 1) goes from -y to +y
+    //maxAxis = absZ;
+    //uc = dir[0];
+    //vc = dir[1];
+    //index = 4;
+	return 0x880000;
+  }
+  // NEGATIVE Z
+  if (!isZPositive && absZ >= absX && absZ >= absY) {
+    // u (0 to 1) goes from +x to -x
+    // v (0 to 1) goes from -y to +y
+    //maxAxis = absZ;
+    //uc = -dir[0];
+    //vc = dir[1];
+    //index = 5;
+	return 0xFF0000;
+  }
+  return 0;
 }
