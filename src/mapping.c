@@ -15,6 +15,73 @@ void		sphere_cord(double *center, double *point, double *u, double *v)
 	*v = 0.5 + asin(d[2]) / M_PI;
 }
 
+void		box_cord(double *center, double *point, double *u, double *v)
+{
+  t_dvec3		dir;
+
+  get_vector(&dir, point, -1, center);
+	float absX = fabs(dir[0]);
+	float absY = fabs(dir[1]);
+	float absZ = fabs(dir[2]);
+  
+  int isXPositive = dir[0] > 0 ? 1 : 0;
+  int isYPositive = dir[1] > 0 ? 1 : 0;
+  int isZPositive = dir[2] > 0 ? 1 : 0;
+
+  float maxAxis;
+  
+  // POSITIVE X
+  if (isXPositive && absX >= absY && absX >= absZ) {
+    // u (0 to 1) goes from +z to -z
+    // v (0 to 1) goes from -y to +y
+    maxAxis = absX;
+    *u = -dir[2];
+    *v = dir[1];
+  }
+  // NEGATIVE X
+  else if (!isXPositive && absX >= absY && absX >= absZ) {
+    // u (0 to 1) goes from -z to +z
+    // v (0 to 1) goes from -y to +y
+    maxAxis = absX;
+    *u = dir[2];
+    *v = dir[1];
+  }
+  // POSITIVE Y
+  else if (isYPositive && absY >= absX && absY >= absZ) {
+    // u (0 to 1) goes from -x to +x
+    // v (0 to 1) goes from +z to -z
+    maxAxis = absY;
+    *u = dir[0];
+    *v = -dir[2];
+  }
+  // NEGATIVE Y
+  else if (!isYPositive && absY >= absX && absY >= absZ) {
+    // u (0 to 1) goes from -x to +x
+    // v (0 to 1) goes from -z to +z
+    maxAxis = absY;
+    *u = dir[0];
+    *v = dir[2];
+  }
+  // POSITIVE Z
+  else if (isZPositive && absZ >= absX && absZ >= absY) {
+    // u (0 to 1) goes from -x to +x
+    // v (0 to 1) goes from -y to +y
+    maxAxis = absZ;
+    *v = dir[1];
+    *u = dir[0];
+  }
+  // NEGATIVE Z
+  else if (!isZPositive && absZ >= absX && absZ >= absY) {
+    // u (0 to 1) goes from +x to -x
+    // v (0 to 1) goes from -y to +y
+    maxAxis = absZ;
+    *u = -dir[0];
+    *v = dir[1];
+  }
+  *u = 0.5f * (*u / maxAxis + 1.0f);
+  *v = 0.5f * (*v / maxAxis + 1.0f);
+}
+
 void		cylinder_cord(double *center, double *point, double *u, double *v, int h, double *dir )
 {
 	t_dvec3		d;
@@ -48,8 +115,10 @@ unsigned int		texture_mapping(void *txr, double *center, double *point, int cord
     t = txr;
     if (cord_flag == SPHERE_CORD)
 	    sphere_cord(center, point, &u, &v);
-    else
+    else if (cord_flag == CYLINDER_CORD)
         cylinder_cord(center, point, &u, &v, t->h, dir);
+    else
+      box_cord(center, point, &u, &v);
 	x = u * t->w;
 	y = v * t->h;
 	ptr = t->pixels;

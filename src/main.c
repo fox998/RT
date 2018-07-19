@@ -73,7 +73,7 @@ int				main(int argc, char **argv)
 	init(&wind, argv[argc - 1]);
 	f = 1;
 	SDL_Surface *txr;
-	txr =  SDL_LoadBMP("Stone_02_COLOR.bmp");
+	txr =  SDL_LoadBMP("Stonewall.bmp");
 	txr = SDL_ConvertSurfaceFormat(txr, SDL_PIXELFORMAT_ARGB8888, 0);
 	int a = SDL_LockSurface(txr);
 	wind.txr = txr;
