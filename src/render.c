@@ -90,7 +90,7 @@ static unsigned int		get_pixel_color(t_window *wind,
 	if (num)
 		shading(wind->scn->lit, &color, p, shepe);
 	else
-		*((unsigned int *)&color) = skybox_mapping(vray);
+		*((unsigned int *)&color) = skybox_mapping(vray, wind->skybox);
 	return (*(unsigned int *)&color);
 }
 

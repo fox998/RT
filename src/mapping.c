@@ -200,79 +200,88 @@ void convert_xyz_to_cube_uv(float x, float y, float z, float *u, float *v)
 }
 
 
-unsigned int		skybox_mapping(double *dir)
+unsigned int		skybox_mapping(double *dir, void *skybox)
 {
 	float absX = fabs(dir[0]);
 	float absY = fabs(dir[1]);
 	float absZ = fabs(dir[2]);
+
+  SDL_Surface **arr = skybox;
   
   int isXPositive = dir[0] > 0 ? 1 : 0;
   int isYPositive = dir[1] > 0 ? 1 : 0;
   int isZPositive = dir[2] > 0 ? 1 : 0;
   
-	//int index;
+	int index;
 
-  //float maxAxis, uc, vc;
+  float maxAxis, uc, vc;
   
   // POSITIVE X
   if (isXPositive && absX >= absY && absX >= absZ) {
     // u (0 to 1) goes from +z to -z
     // v (0 to 1) goes from -y to +y
-    //maxAxis = absX;
-    //uc = -dir[2];
-    //vc = dir[1];
-    //index = 0;
-	return 0x88;
+    maxAxis = absX;
+    uc = -dir[1];
+    vc = -dir[2];
+    index = 0;
+	  //return 0x88;
   }
   // NEGATIVE X
-  if (!isXPositive && absX >= absY && absX >= absZ) {
+  else if (!isXPositive && absX >= absY && absX >= absZ) {
     // u (0 to 1) goes from -z to +z
     // v (0 to 1) goes from -y to +y
-    //maxAxis = absX;
-    //uc = dir[2];
-    //vc = dir[1];
-    //index = 1;
-	return 0xFF;
+    maxAxis = absX;
+    uc = dir[1];
+    vc = -dir[2];
+    index = 1;
+	  //return 0xFF;
   }
   // POSITIVE Y
-  if (isYPositive && absY >= absX && absY >= absZ) {
+  else if (isYPositive && absY >= absX && absY >= absZ) {
     // u (0 to 1) goes from -x to +x
     // v (0 to 1) goes from +z to -z
-    //maxAxis = absY;
-    //uc = dir[0];
-    //vc = -dir[2];
-    //index = 2;
-	return 0x8800;
+    maxAxis = absY;
+    uc = dir[0];
+    vc = -dir[2];
+    index = 2;
+	  //return 0x8800;
   }
   // NEGATIVE Y
-  if (!isYPositive && absY >= absX && absY >= absZ) {
+  else if (!isYPositive && absY >= absX && absY >= absZ) {
     // u (0 to 1) goes from -x to +x
     // v (0 to 1) goes from -z to +z
-    //maxAxis = absY;
-    //uc = dir[0];
-    //vc = dir[2];
-    //index = 3;
-	return 0xFF00;
+    maxAxis = absY;
+    uc = -dir[0];
+    vc = -dir[2];
+    index = 3;
+	  //return 0xFF00;
   }
   // POSITIVE Z
-  if (isZPositive && absZ >= absX && absZ >= absY) {
+  else if (isZPositive && absZ >= absX && absZ >= absY) {
     // u (0 to 1) goes from -x to +x
     // v (0 to 1) goes from -y to +y
-    //maxAxis = absZ;
-    //uc = dir[0];
-    //vc = dir[1];
-    //index = 4;
-	return 0x880000;
+    maxAxis = absZ;
+    uc = -dir[1];
+    vc = dir[0];
+    index = 4;
+	  //return 0x880000;
   }
   // NEGATIVE Z
-  if (!isZPositive && absZ >= absX && absZ >= absY) {
+  else if (!isZPositive && absZ >= absX && absZ >= absY) {
     // u (0 to 1) goes from +x to -x
     // v (0 to 1) goes from -y to +y
-    //maxAxis = absZ;
-    //uc = -dir[0];
-    //vc = dir[1];
-    //index = 5;
-	return 0xFF0000;
+    maxAxis = absZ;
+    uc = -dir[1];
+    vc = -dir[0];
+    index = 5;
+	  //return 0xFF0000;
   }
-  return 0;
+  uc = 0.5f * (uc / maxAxis + 1.0f);
+  vc = 0.5f * (vc / maxAxis + 1.0f);
+
+  int w = arr[index]->w * uc;
+  int h = arr[index]->h * vc;
+  unsigned int *pix = arr[index]->pixels;
+
+  return (pix[w + h * arr[index]->w]);
 }

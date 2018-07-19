@@ -154,6 +154,7 @@ typedef struct			s_window
 	int			w;
 	int			h;
 	void		*txr;
+	void		*skybox;
 }						t_window;
 
 typedef struct			s_thread

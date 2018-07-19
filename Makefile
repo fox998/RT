@@ -38,6 +38,18 @@ OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 OBJ_FLAG = 
 #-Wextra -Werror -Wall
 
+INCLUDES	=	-I./frameworks/SDL2.framework/Versions/A/Headers \
+				-I./frameworks/SDL2_ttf.framework/Versions/A/Headers \
+				-I./frameworks/SDL2_image.framework/Versions/A/Headers \
+				-I./frameworks/SDL2_mixer.framework/Headers \
+				-I./frameworks/SDL2_net.framework/Headers \
+				-F./frameworks
+FRAMEWORKS	=	-F./frameworks \
+				-rpath ./frameworks \
+				-framework OpenGL -framework AppKit -framework OpenCl \
+				-framework SDL2_ttf -framework SDL2_image \
+				-framework SDL2_mixer -framework SDL2_net
+
 SDL_FLAG :=
 
 ifeq ($(shell uname), Linux)
@@ -59,13 +71,13 @@ vpath %.c $(SRC_DIR)
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(OBJ) $(LIN_FLAG) $(LIBFT) -o $(NAME)
+	$(CC) $(OBJ) $(LIN_FLAG) $(LIBFT) -o $(NAME) $(FRAMEWORKS)
 
 $(LIBFT): 
 	make -C $(LIBFT_DIR)
 
 $(OBJ_DIR)%.o:%.c
-	$(CC) $(OBJ_FLAG) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_DIR) -I/Library/Frameworks/SDL2.framework/Headers/
+	$(CC) $(OBJ_FLAG) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_DIR) $(INCLUDES)
 
 clean:
 	rm -f $(OBJ)

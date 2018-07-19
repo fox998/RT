@@ -14,6 +14,8 @@
 #include "vector.h"
 #include "struct.h"
 #include "my_sdl.h"
+#include "SDL_image.h"
+#include <unistd.h>
 
 static void		init(t_window *wind, char *path)
 {
@@ -62,6 +64,33 @@ static int	check_k(SDL_Event e, t_window *wind)
 
 #include <stdio.h>
 
+void			*init_skybox()
+{
+	SDL_Surface		**arr;
+
+	arr = malloc(sizeof(SDL_Surface *) * 6);
+	arr[1] = IMG_Load("pinkback.jpg");
+	arr[0] = IMG_Load("pinkfront.jpg");
+	arr[2] = IMG_Load("pinkleft.jpg");
+	arr[3] = IMG_Load("pinkright.jpg");
+	arr[4] = IMG_Load("pinktop.jpg");
+	arr[5] = IMG_Load("pinkbot.jpg");
+	arr[0] = SDL_ConvertSurfaceFormat(arr[0], SDL_PIXELFORMAT_ARGB8888, 0);
+	arr[1] = SDL_ConvertSurfaceFormat(arr[1], SDL_PIXELFORMAT_ARGB8888, 0);
+	arr[2] = SDL_ConvertSurfaceFormat(arr[2], SDL_PIXELFORMAT_ARGB8888, 0);
+	arr[3] = SDL_ConvertSurfaceFormat(arr[3], SDL_PIXELFORMAT_ARGB8888, 0);
+	arr[4] = SDL_ConvertSurfaceFormat(arr[4], SDL_PIXELFORMAT_ARGB8888, 0);
+	arr[5] = SDL_ConvertSurfaceFormat(arr[5], SDL_PIXELFORMAT_ARGB8888, 0);
+	SDL_LockSurface(arr[0]);
+	SDL_LockSurface(arr[1]);
+	SDL_LockSurface(arr[2]);
+	SDL_LockSurface(arr[3]);
+	SDL_LockSurface(arr[4]);
+	SDL_LockSurface(arr[5]);
+	printf("%p\n", arr[0]);
+	return (arr);
+}
+
 int				main(int argc, char **argv)
 {
 	t_window	wind;
@@ -73,10 +102,12 @@ int				main(int argc, char **argv)
 	init(&wind, argv[argc - 1]);
 	f = 1;
 	SDL_Surface *txr;
+	IMG_Init( IMG_INIT_JPG);
 	txr =  SDL_LoadBMP("Stonewall.bmp");
 	txr = SDL_ConvertSurfaceFormat(txr, SDL_PIXELFORMAT_ARGB8888, 0);
 	int a = SDL_LockSurface(txr);
 	wind.txr = txr;
+	wind.skybox = init_skybox();
 	render(&wind);
 	while (f)
 		while (SDL_PollEvent(&e) != 0 && f)
