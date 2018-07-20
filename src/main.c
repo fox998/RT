@@ -14,7 +14,6 @@
 #include "vector.h"
 #include "struct.h"
 #include "my_sdl.h"
-#include "SDL_image.h"
 #include <unistd.h>
 
 static void		init(t_window *wind, char *path)
@@ -102,7 +101,7 @@ int				main(int argc, char **argv)
 	init(&wind, argv[argc - 1]);
 	f = 1;
 	SDL_Surface *txr;
-	IMG_Init( IMG_INIT_JPG);
+	IMG_Init(IMG_INIT_JPG);
 	txr =  SDL_LoadBMP("Stonewall.bmp");
 	txr = SDL_ConvertSurfaceFormat(txr, SDL_PIXELFORMAT_ARGB8888, 0);
 	int a = SDL_LockSurface(txr);

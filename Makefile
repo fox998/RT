@@ -38,24 +38,26 @@ OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 OBJ_FLAG = 
 #-Wextra -Werror -Wall
 
-INCLUDES	=	-I./frameworks/SDL2.framework/Versions/A/Headers \
+INCLUDES	:=
+FRAMEWORKS	:=
+
+SDL_FLAG :=
+
+ifeq ($(shell uname), Linux)
+	SDL_FLAG = -lSDL2 -lSDL2_image
+else
+	SDL_FLAG = -framework SDL2 -F /Library/Frameworks/
+	FRAMEWORKS	=	-F./frameworks \
+				-rpath ./frameworks \
+				-framework OpenGL -framework AppKit -framework OpenCl \
+				-framework SDL2_ttf -framework SDL2_image \
+				-framework SDL2_mixer -framework SDL2_net
+	INCLUDES	=	-I./frameworks/SDL2.framework/Versions/A/Headers \
 				-I./frameworks/SDL2_ttf.framework/Versions/A/Headers \
 				-I./frameworks/SDL2_image.framework/Versions/A/Headers \
 				-I./frameworks/SDL2_mixer.framework/Headers \
 				-I./frameworks/SDL2_net.framework/Headers \
 				-F./frameworks
-FRAMEWORKS	=	-F./frameworks \
-				-rpath ./frameworks \
-				-framework OpenGL -framework AppKit -framework OpenCl \
-				-framework SDL2_ttf -framework SDL2_image \
-				-framework SDL2_mixer -framework SDL2_net
-
-SDL_FLAG :=
-
-ifeq ($(shell uname), Linux)
-	SDL_FLAG = -lSDL2
-else
-	SDL_FLAG = -framework SDL2 -F /Library/Frameworks/
 endif
 
 LIN_FLAG = $(SDL_FLAG) -lm -lpthread
