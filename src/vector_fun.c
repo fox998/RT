@@ -57,3 +57,37 @@ void			get_vector(t_dvec3 *res_v, t_dvec3 a, double sing, t_dvec3 b)
 	res_v[0][1] = tmp[1];
 	res_v[0][2] = tmp[2];
 }
+
+#include <stdio.h>
+
+void			multp_vect_to_matrix(double matrix[3][3], double *vec)
+{
+	t_dvec3		rec;
+
+	rec[0] = matrix[0][0] * vec[0] + matrix[0][1] * vec[1] + matrix[0][2] * vec[2];
+	rec[1] = matrix[1][0] * vec[0] + matrix[1][1] * vec[1] + matrix[1][2] * vec[2];
+	rec[2] = matrix[2][0] * vec[0] + matrix[2][1] * vec[1] + matrix[2][2] * vec[2];
+	vec[0] = rec[0];	
+	vec[1] = rec[1];
+	vec[2] = rec[2];	
+}
+
+
+void			to_new_basis(t_dvec3 u, t_dvec3 w, t_dvec3 r, t_dvec3 vec)
+{
+	double	matrix[3][3];
+	double		det;
+
+	det = u[0] * w[1] * r[2] + w[0] * r[1] * u[2] + r[0] * u[1] * w[2] -
+		(r[0] * w[1] * u[2] + u[0] * r[1] * w[2] + w[0] * u[1] * r[2]);
+	matrix[0][0] = (w[1] * r[2] - r[1] * w[2]) / det;
+	matrix[0][1] = (u[1] * r[2] - r[1] * u[2]) / det;
+	matrix[0][2] = (u[1] * w[2] - w[1] * u[2]) / det;
+	matrix[1][0] = (w[0] * r[2] - r[0] * w[2]) / det;
+	matrix[1][1] = (u[0] * r[2] - r[0] * u[2]) / det;
+	matrix[1][2] = (u[0] * w[2] - w[0] * u[2]) / det;
+	matrix[2][0] = (w[0] * r[1] - r[0] * w[1]) / det;
+	matrix[2][1] = (u[0] * r[1] - r[0] * u[1]) / det;
+	matrix[2][2] = (u[0] * w[1] - w[0] * u[1]) / det;
+	multp_vect_to_matrix(matrix, vec);
+}

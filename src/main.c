@@ -102,9 +102,14 @@ int				main(int argc, char **argv)
 	f = 1;
 	SDL_Surface *txr;
 	IMG_Init(IMG_INIT_JPG);
-	txr =  SDL_LoadBMP("Stonewall.bmp");
+	txr =  SDL_LoadBMP("Stone_02_COLOR.bmp");
 	txr = SDL_ConvertSurfaceFormat(txr, SDL_PIXELFORMAT_ARGB8888, 0);
 	int a = SDL_LockSurface(txr);
+
+	wind.nrml_txr = SDL_LoadBMP("Stone_02_NRM.bmp");
+	wind.nrml_txr = SDL_ConvertSurfaceFormat(wind.nrml_txr, SDL_PIXELFORMAT_ARGB8888, 0);
+	SDL_LockSurface(wind.nrml_txr);
+	printf("nrm %p\n", wind.nrml_txr);
 	wind.txr = txr;
 	wind.skybox = init_skybox();
 	render(&wind);

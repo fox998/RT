@@ -51,6 +51,7 @@ static void				shading(t_light *lights,
 	s.a_intens = 0;
 	s.lambert = 0;
 	s.phong = 0;
+	normal_mapping(&p);
 	while (lights)
 	{
 		s.l_intens = lights->intensity;
@@ -83,6 +84,7 @@ static unsigned int		get_pixel_color(t_window *wind,
 	p.t = -1;
 	num = 0;
 	p.txr = wind->txr;
+	p.nrml_txr = wind->nrml_txr;
 	while (shepe[++i])
 	{
 		num += shepe[i][0].intersect(shepe[i][0].data, vray, wind->cam->pos, &p);

@@ -90,6 +90,8 @@ libfclean:
 fclean: clean
 	rm -f $(NAME)
 
+fcleanall: fclean libfclean
+
 relib:
 	make re -C $(LIBFT_DIR)
 

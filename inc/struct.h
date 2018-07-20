@@ -38,7 +38,9 @@ typedef struct			s_intersect_param
 	t_dvec3			v;
 	double			t;
 	void			*txr;
+	void			*nrml_txr;
 	unsigned int	color;
+	unsigned int	txr_cord;
 }						t_iparam;
 
 typedef struct			s_shading
@@ -154,6 +156,7 @@ typedef struct			s_window
 	int			w;
 	int			h;
 	void		*txr;
+	void		*nrml_txr;
 	void		*skybox;
 }						t_window;
 

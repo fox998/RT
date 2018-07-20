@@ -17,69 +17,69 @@ void		sphere_cord(double *center, double *point, double *u, double *v)
 
 void		box_cord(double *center, double *point, double *u, double *v)
 {
-  t_dvec3		dir;
+	t_dvec3		dir;
 
-  get_vector(&dir, point, -1, center);
+	get_vector(&dir, point, -1, center);
 	float absX = fabs(dir[0]);
 	float absY = fabs(dir[1]);
 	float absZ = fabs(dir[2]);
-  
-  int isXPositive = dir[0] > 0 ? 1 : 0;
-  int isYPositive = dir[1] > 0 ? 1 : 0;
-  int isZPositive = dir[2] > 0 ? 1 : 0;
+	
+	int isXPositive = dir[0] > 0 ? 1 : 0;
+	int isYPositive = dir[1] > 0 ? 1 : 0;
+	int isZPositive = dir[2] > 0 ? 1 : 0;
 
-  float maxAxis;
-  
-  // POSITIVE X
-  if (isXPositive && absX >= absY && absX >= absZ) {
+	float maxAxis;
+	
+	// POSITIVE X
+	if (isXPositive && absX >= absY && absX >= absZ) {
 	// u (0 to 1) goes from +z to -z
 	// v (0 to 1) goes from -y to +y
 	maxAxis = absX;
 	*u = -dir[2];
 	*v = dir[1];
-  }
-  // NEGATIVE X
-  else if (!isXPositive && absX >= absY && absX >= absZ) {
+	}
+	// NEGATIVE X
+	else if (!isXPositive && absX >= absY && absX >= absZ) {
 	// u (0 to 1) goes from -z to +z
 	// v (0 to 1) goes from -y to +y
 	maxAxis = absX;
 	*u = dir[2];
 	*v = dir[1];
-  }
-  // POSITIVE Y
-  else if (isYPositive && absY >= absX && absY >= absZ) {
+	}
+	// POSITIVE Y
+	else if (isYPositive && absY >= absX && absY >= absZ) {
 	// u (0 to 1) goes from -x to +x
 	// v (0 to 1) goes from +z to -z
 	maxAxis = absY;
 	*u = dir[0];
 	*v = -dir[2];
-  }
-  // NEGATIVE Y
-  else if (!isYPositive && absY >= absX && absY >= absZ) {
+	}
+	// NEGATIVE Y
+	else if (!isYPositive && absY >= absX && absY >= absZ) {
 	// u (0 to 1) goes from -x to +x
 	// v (0 to 1) goes from -z to +z
 	maxAxis = absY;
 	*u = dir[0];
 	*v = dir[2];
-  }
-  // POSITIVE Z
-  else if (isZPositive && absZ >= absX && absZ >= absY) {
+	}
+	// POSITIVE Z
+	else if (isZPositive && absZ >= absX && absZ >= absY) {
 	// u (0 to 1) goes from -x to +x
 	// v (0 to 1) goes from -y to +y
 	maxAxis = absZ;
 	*v = dir[1];
 	*u = dir[0];
-  }
-  // NEGATIVE Z
-  else if (!isZPositive && absZ >= absX && absZ >= absY) {
+	}
+	// NEGATIVE Z
+	else if (!isZPositive && absZ >= absX && absZ >= absY) {
 	// u (0 to 1) goes from +x to -x
 	// v (0 to 1) goes from -y to +y
 	maxAxis = absZ;
 	*u = -dir[0];
 	*v = dir[1];
-  }
-  *u = 0.5f * (*u / maxAxis + 1.0f);
-  *v = 0.5f * (*v / maxAxis + 1.0f);
+	}
+	*u = 0.5f * (*u / maxAxis + 1.0f);
+	*v = 0.5f * (*v / maxAxis + 1.0f);
 }
 
 void		cylinder_cord(double *center, double *point, double *u, double *v, int h, double *dir )
@@ -103,7 +103,7 @@ void		cylinder_cord(double *center, double *point, double *u, double *v, int h, 
 	*v = h2/10 - (int)h2/ 10;//0.5 + sin((point[2] - center[2]) * 0.25) / 2;
 }
 
-unsigned int		texture_mapping(void *txr, double *center, double *point, int cord_flag, double *dir)
+unsigned int		texture_mapping(void *intersect_param, double *center, double *point, int cord_flag, double *dir)
 {
 	double				u;
 	double				v;
@@ -111,18 +111,21 @@ unsigned int		texture_mapping(void *txr, double *center, double *point, int cord
 	int					y;
 	unsigned int				*ptr;
 	SDL_Surface                 *t;
+	t_iparam					*p;
 
-	t = txr;
+	p = intersect_param;
+	t = p->txr;
 	if (cord_flag == SPHERE_CORD)
 		sphere_cord(center, point, &u, &v);
 	else if (cord_flag == CYLINDER_CORD)
 		cylinder_cord(center, point, &u, &v, t->h, dir);
 	else
-	  box_cord(center, point, &u, &v);
+		box_cord(center, point, &u, &v);
 	x = u * t->w;
 	y = v * t->h;
 	ptr = t->pixels;
-	return ptr[y * t->w + x];
+	p->txr_cord = y * t->w + x;
+	return ptr[p->txr_cord];
 }
 
 
@@ -134,102 +137,115 @@ unsigned int		skybox_mapping(double *dir, void *skybox)
 	float absY = fabs(dir[1]);
 	float absZ = fabs(dir[2]);
 
-  SDL_Surface **arr = skybox;
-  
-  int isXPositive = dir[0] > 0 ? 1 : 0;
-  int isYPositive = dir[1] > 0 ? 1 : 0;
-  int isZPositive = dir[2] > 0 ? 1 : 0;
-  
+	SDL_Surface **arr = skybox;
+	
+	int isXPositive = dir[0] > 0 ? 1 : 0;
+	int isYPositive = dir[1] > 0 ? 1 : 0;
+	int isZPositive = dir[2] > 0 ? 1 : 0;
+	
 	int index;
 
-  float maxAxis, uc, vc;
-  
-  // POSITIVE X
-  if (isXPositive && absX >= absY && absX >= absZ) {
+	float maxAxis, uc, vc;
+	
+	// POSITIVE X
+	if (isXPositive && absX >= absY && absX >= absZ) {
 	// u (0 to 1) goes from +z to -z
 	// v (0 to 1) goes from -y to +y
 	maxAxis = absX;
 	uc = -dir[1];
 	vc = -dir[2];
 	index = 0;
-	  //return 0x88;
-  }
-  // NEGATIVE X
-  else if (!isXPositive && absX >= absY && absX >= absZ) {
+		//return 0x88;
+	}
+	// NEGATIVE X
+	else if (!isXPositive && absX >= absY && absX >= absZ) {
 	// u (0 to 1) goes from -z to +z
 	// v (0 to 1) goes from -y to +y
 	maxAxis = absX;
 	uc = dir[1];
 	vc = -dir[2];
 	index = 1;
-	  //return 0xFF;
-  }
-  // POSITIVE Y
-  else if (isYPositive && absY >= absX && absY >= absZ) {
+		//return 0xFF;
+	}
+	// POSITIVE Y
+	else if (isYPositive && absY >= absX && absY >= absZ) {
 	// u (0 to 1) goes from -x to +x
 	// v (0 to 1) goes from +z to -z
 	maxAxis = absY;
 	uc = dir[0];
 	vc = -dir[2];
 	index = 2;
-	  //return 0x8800;
-  }
-  // NEGATIVE Y
-  else if (!isYPositive && absY >= absX && absY >= absZ) {
+		//return 0x8800;
+	}
+	// NEGATIVE Y
+	else if (!isYPositive && absY >= absX && absY >= absZ) {
 	// u (0 to 1) goes from -x to +x
 	// v (0 to 1) goes from -z to +z
 	maxAxis = absY;
 	uc = -dir[0];
 	vc = -dir[2];
 	index = 3;
-	  //return 0xFF00;
-  }
-  // POSITIVE Z
-  else if (isZPositive && absZ >= absX && absZ >= absY) {
+		//return 0xFF00;
+	}
+	// POSITIVE Z
+	else if (isZPositive && absZ >= absX && absZ >= absY) {
 	// u (0 to 1) goes from -x to +x
 	// v (0 to 1) goes from -y to +y
 	maxAxis = absZ;
 	uc = -dir[1];
 	vc = dir[0];
 	index = 4;
-	  //return 0x880000;
-  }
-  // NEGATIVE Z
-  else if (!isZPositive && absZ >= absX && absZ >= absY) {
+		//return 0x880000;
+	}
+	// NEGATIVE Z
+	else if (!isZPositive && absZ >= absX && absZ >= absY) {
 	// u (0 to 1) goes from +x to -x
 	// v (0 to 1) goes from -y to +y
 	maxAxis = absZ;
 	uc = -dir[1];
 	vc = -dir[0];
 	index = 5;
-	  //return 0xFF0000;
-  }
-  uc = 0.5f * (uc / maxAxis + 1.0f);
-  vc = 0.5f * (vc / maxAxis + 1.0f);
+		//return 0xFF0000;
+	}
+	uc = 0.5f * (uc / maxAxis + 1.0f);
+	vc = 0.5f * (vc / maxAxis + 1.0f);
 
-  int w = arr[index]->w * uc;
-  int h = arr[index]->h * vc;
-  unsigned int *pix = arr[index]->pixels;
+	int w = arr[index]->w * uc;
+	int h = arr[index]->h * vc;
+	unsigned int *pix = arr[index]->pixels;
 
-  return (pix[w + h * arr[index]->w]);
+	return (pix[w + h * arr[index]->w]);
 }
 
-void      normal_mapping(void *texture, double *n)
+void      normal_mapping(void *intersect_param)
 {
 	SDL_Surface	*txr;
-	t_dvec3		r = {0, 0, 1};
+	t_dvec3		r = {1, 0, 0};
 	t_dvec3		w;
-	t_color		txr_n;
+	t_dvec3		new_n;
+	t_color		rgb_n;
+	t_iparam	*p;
 
-  	if (dot_product(n, r) == 0)
+	p = intersect_param;
+	printf("my %f %f %f \n", p->normal[0], p->normal[1], p->normal[2]);
+	if (dot_product(p->normal, r) == 0)
 	{
 		r[1] = 1;
-		r[2] = 0;
+		r[0] = 0;
 	}
-	vector_product(&w, n, r);
+	vector_product(&w, p->normal, r);
 	norm_vector(&w);
-	vector_product(&r, n, w);
+	vector_product(&r, w, p->normal);
 	norm_vector(&r);
-	txr = texture;
-
+	txr = p->nrml_txr;
+	rgb_n =	((t_color *)txr->pixels)[p->txr_cord];
+	new_n[0] = rgb_n.r - 128;
+	new_n[1] = rgb_n.g - 128;
+	new_n[2] = rgb_n.b;
+	norm_vector(&new_n);
+	to_new_basis(r, w, p->normal, new_n);
+	printf("txr %f %f %f\n", new_n[0], new_n[1], new_n[2]);
+	p->normal[0] = new_n[0];
+	p->normal[1] = -new_n[1];
+	p->normal[2] = new_n[2];
 }

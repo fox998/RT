@@ -1,7 +1,7 @@
 camera
 {
-	pos => 0, -28, 1
-	dir => 1, 1, -1
+	pos => 0, -28, 0
+	dir => 0, 1, 0
 }
 
 sphere
@@ -11,21 +11,6 @@ sphere
 	color => 000099
 }
 
-cylinder
-{
-	pos => 3, -3, 0
-	dir => 1, 0, 1
-	r => 2
-	color => 00aa00
-}
-
-cone
-{
-	pos => -5, -5, 3
-	dir => -1, 0, 1
-	a => 25
-	color => ffaa00
-}
 
 
 light

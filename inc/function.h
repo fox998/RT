@@ -22,8 +22,9 @@
 #define     CYLINDER_CORD   1
 #define     CYBE_CORD       2
 
-unsigned int		texture_mapping(void *txr, double *center, double *point, int cord_flag, double *dir);
+unsigned int		texture_mapping(void *intersect_param, double *center, double *point, int cord_flag, double *dir);
 unsigned int		skybox_mapping(double *dir, void *skybox);
+void                normal_mapping(void *intersect_param);
 
 
 /*
