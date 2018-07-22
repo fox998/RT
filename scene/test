@@ -6,15 +6,31 @@ camera
 
 sphere
 {
-	pos => -2, -3 , 1
+	pos => 2, -3 , 1
 	r => 3
 	color => 000099
 }
 
+cylinder
+{
+	pos => 3, -3, 0
+	dir => 0, 0, 10
+	r => 2
+	color => 00aa00
+}
 
+cone
+{
+	pos => -5, -5, 3
+	dir => 0, 0, 10
+	a => 25
+	color => ffaa00
+}
 
 light
 {
-	dir => 0, -5, 2
+	dir => 0, -1, 0
 	intensity => 50
 }
+
+

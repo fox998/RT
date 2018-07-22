@@ -68,8 +68,8 @@ void			*init_skybox()
 	SDL_Surface		**arr;
 
 	arr = malloc(sizeof(SDL_Surface *) * 6);
-	arr[1] = IMG_Load("pinkback.jpg");
 	arr[0] = IMG_Load("pinkfront.jpg");
+	arr[1] = IMG_Load("pinkback.jpg");
 	arr[2] = IMG_Load("pinkleft.jpg");
 	arr[3] = IMG_Load("pinkright.jpg");
 	arr[4] = IMG_Load("pinktop.jpg");
@@ -86,7 +86,6 @@ void			*init_skybox()
 	SDL_LockSurface(arr[3]);
 	SDL_LockSurface(arr[4]);
 	SDL_LockSurface(arr[5]);
-	printf("%p\n", arr[0]);
 	return (arr);
 }
 

@@ -15,6 +15,16 @@ void		sphere_cord(double *center, double *point, double *u, double *v)
 	*v = 0.5 + asin(d[2]) / M_PI;
 }
 
+void		plane_cord(double *center, double *point, double *u, double *v)
+{
+	t_dvec3		vec;
+	t_dvec3		rec;
+
+	rec[]
+	get_vector(&vec, point, -1, center);
+
+}
+
 void		box_cord(double *center, double *point, double *u, double *v)
 {
 	t_dvec3		dir;
@@ -220,23 +230,22 @@ unsigned int		skybox_mapping(double *dir, void *skybox)
 void      normal_mapping(void *intersect_param)
 {
 	SDL_Surface	*txr;
-	t_dvec3		r = {1, 0, 0};
+	t_dvec3		r;
 	t_dvec3		w;
 	t_dvec3		new_n;
 	t_color		rgb_n;
 	t_iparam	*p;
 
 	p = intersect_param;
-	printf("my %f %f %f \n", p->normal[0], p->normal[1], p->normal[2]);
-	if (dot_product(p->normal, r) == 0)
-	{
-		r[1] = 1;
-		r[0] = 0;
-	}
+	r[0] = p->normal[0];
+	r[1] = p->normal[1];
+	r[2] = p->normal[2] - 0.0001;
+	norm_vector(&r);
 	vector_product(&w, p->normal, r);
 	norm_vector(&w);
 	vector_product(&r, w, p->normal);
 	norm_vector(&r);
+	//printf("my %f %f %f \n", r[0], r[1], r[2]);
 	txr = p->nrml_txr;
 	rgb_n =	((t_color *)txr->pixels)[p->txr_cord];
 	new_n[0] = rgb_n.r - 128;
@@ -244,8 +253,8 @@ void      normal_mapping(void *intersect_param)
 	new_n[2] = rgb_n.b;
 	norm_vector(&new_n);
 	to_new_basis(r, w, p->normal, new_n);
-	printf("txr %f %f %f\n", new_n[0], new_n[1], new_n[2]);
+	//printf("my %f %f %f \ntxr %f %f %f\n",r[0], r[1], r[2], new_n[0], new_n[1], new_n[2]);
 	p->normal[0] = new_n[0];
-	p->normal[1] = -new_n[1];
+	p->normal[1] = new_n[1];
 	p->normal[2] = new_n[2];
 }

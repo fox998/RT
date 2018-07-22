@@ -72,22 +72,19 @@ void			multp_vect_to_matrix(double matrix[3][3], double *vec)
 	vec[2] = rec[2];	
 }
 
-
 void			to_new_basis(t_dvec3 u, t_dvec3 w, t_dvec3 r, t_dvec3 vec)
 {
-	double	matrix[3][3];
+	double		matrix[3][3];
 	double		det;
 
-	det = u[0] * w[1] * r[2] + w[0] * r[1] * u[2] + r[0] * u[1] * w[2] -
-		(r[0] * w[1] * u[2] + u[0] * r[1] * w[2] + w[0] * u[1] * r[2]);
-	matrix[0][0] = (w[1] * r[2] - r[1] * w[2]) / det;
-	matrix[0][1] = (u[1] * r[2] - r[1] * u[2]) / det;
-	matrix[0][2] = (u[1] * w[2] - w[1] * u[2]) / det;
-	matrix[1][0] = (w[0] * r[2] - r[0] * w[2]) / det;
-	matrix[1][1] = (u[0] * r[2] - r[0] * u[2]) / det;
-	matrix[1][2] = (u[0] * w[2] - w[0] * u[2]) / det;
-	matrix[2][0] = (w[0] * r[1] - r[0] * w[1]) / det;
-	matrix[2][1] = (u[0] * r[1] - r[0] * u[1]) / det;
-	matrix[2][2] = (u[0] * w[1] - w[0] * u[1]) / det;
+	matrix[0][0] = u[0];
+	matrix[0][1] = w[0];
+	matrix[0][2] = r[0];
+	matrix[1][0] = u[1];
+	matrix[1][1] = w[1];
+	matrix[1][2] = r[1];
+	matrix[2][0] = u[2];
+	matrix[2][1] = w[2];
+	matrix[2][2] = r[2];
 	multp_vect_to_matrix(matrix, vec);
 }
