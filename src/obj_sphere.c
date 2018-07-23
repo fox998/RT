@@ -44,7 +44,7 @@ int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	get_vector(&p->v, e, -1, p->i_point);
 	norm_vector(&p->v);
 	norm_vector(&p->normal);
-	p->color =  texture_mapping(p, s->center, p->i_point, SPHERE_CORD, 0);
+	p->color =  texture_mapping(p, s->center, p->i_point, CYBE_CORD, 0);
 	return (1);
 }
 

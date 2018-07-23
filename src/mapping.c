@@ -15,14 +15,25 @@ void		sphere_cord(double *center, double *point, double *u, double *v)
 	*v = 0.5 + asin(d[2]) / M_PI;
 }
 
-void		plane_cord(double *center, double *point, double *u, double *v)
+void		plane_cord(double *center, double *point, double *u, double *v, double *n)
 {
+	t_dvec3		r;
+	t_dvec3		w;
 	t_dvec3		vec;
-	t_dvec3		rec;
 
-	rec[]
+	r[0] = n[0];
+	r[1] = n[1] - 0.001;
+	r[2] = n[2] - 0.002;
+	norm_vector(&r);
+	vector_product(&w, n, r);
+	norm_vector(&w);
+	vector_product(&r, w, n);
+	norm_vector(&r);
 	get_vector(&vec, point, -1, center);
-
+	to_new_basis(w, r, n, vec);
+	//printf("plane cord %f %f %f\n", vec[0], vec[1], vec[2]);
+	*u = fabs(vec[0])/10 - (int)fabs(vec[0])/ 10;
+	*v = fabs(vec[1])/10 - (int)fabs(vec[1])/ 10;
 }
 
 void		box_cord(double *center, double *point, double *u, double *v)
@@ -129,6 +140,8 @@ unsigned int		texture_mapping(void *intersect_param, double *center, double *poi
 		sphere_cord(center, point, &u, &v);
 	else if (cord_flag == CYLINDER_CORD)
 		cylinder_cord(center, point, &u, &v, t->h, dir);
+	else if (cord_flag == PLANE_CORD)
+		plane_cord(center, point, &u, &v, dir);
 	else
 		box_cord(center, point, &u, &v);
 	x = u * t->w;
@@ -238,8 +251,8 @@ void      normal_mapping(void *intersect_param)
 
 	p = intersect_param;
 	r[0] = p->normal[0];
-	r[1] = p->normal[1];
-	r[2] = p->normal[2] - 0.0001;
+	r[1] = p->normal[1] - 0.0001;
+	r[2] = p->normal[2] - 0.0002;
 	norm_vector(&r);
 	vector_product(&w, p->normal, r);
 	norm_vector(&w);

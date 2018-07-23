@@ -47,11 +47,12 @@ static void				shading(t_light *lights,
 	t_shading	s;
 	int			i;
 
+	normal_disturbance(&p);
 	*color = *(t_color *)&p.color;
 	s.a_intens = 0;
 	s.lambert = 0;
 	s.phong = 0;
-	normal_mapping(&p);
+	//normal_mapping(&p);
 	while (lights)
 	{
 		s.l_intens = lights->intensity;

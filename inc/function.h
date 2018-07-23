@@ -21,11 +21,12 @@
 #define     SPHERE_CORD     0
 #define     CYLINDER_CORD   1
 #define     CYBE_CORD       2
+#define     PLANE_CORD      3
 
 unsigned int		texture_mapping(void *intersect_param, double *center, double *point, int cord_flag, double *dir);
 unsigned int		skybox_mapping(double *dir, void *skybox);
 void                normal_mapping(void *intersect_param);
-
+void                normal_disturbance(void *intersect_param);
 
 /*
 **	USAGE
