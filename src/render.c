@@ -41,18 +41,18 @@ static void				dop(t_obj_3d *shepe,
 	}
 }
 
-static void				shading(t_light *lights,
-						t_color *color, t_iparam p, t_obj_3d **shepe)
+static t_color			shading(t_light *lights t_iparam p, t_obj_3d **shepe)
 {
 	t_shading	s;
 	int			i;
+	t_color		color;
 
-	normal_disturbance(&p);
-	*color = *(t_color *)&p.color;
+	//normal_disturbance(&p);
+	color = *(t_color *)&p.color;
 	s.a_intens = 0;
 	s.lambert = 0;
 	s.phong = 0;
-	//normal_mapping(&p);
+	normal_mapping(&p);
 	while (lights)
 	{
 		s.l_intens = lights->intensity;
@@ -64,9 +64,17 @@ static void				shading(t_light *lights,
 		dop(shepe[i], &s, p, lights);
 		lights = lights->next;
 	}
-	color->r = fmin(0xFF, color->r * (s.a_intens + s.lambert) + s.phong * 0x8F);
-	color->g = fmin(0xFF, color->g * (s.a_intens + s.lambert) + s.phong * 0x8F);
-	color->b = fmin(0xFF, color->b * (s.a_intens + s.lambert) + s.phong * 0x8F);
+	color.r = fmin(0xFF, color.r * (s.a_intens + s.lambert) + s.phong * 0x8F);
+	color.g = fmin(0xFF, color.g * (s.a_intens + s.lambert) + s.phong * 0x8F);
+	color.b = fmin(0xFF, color.b * (s.a_intens + s.lambert) + s.phong * 0x8F);
+}
+
+t_color					mult_color(t_color color, double vel)
+{
+	color.r *= vel;
+	color.g *= vel;
+	color.b *= vel;	
+	return (color);
 }
 
 static unsigned int		get_pixel_color(t_window *wind,
@@ -81,19 +89,30 @@ static unsigned int		get_pixel_color(t_window *wind,
 
 	get_rey(wind->cam, &vray, (double *)cam_cor);
 	norm_vector(&vray);
-	i = -1;
-	p.t = -1;
-	num = 0;
 	p.txr = wind->txr;
 	p.nrml_txr = wind->nrml_txr;
-	while (shepe[++i])
+	*((unsigned int *)&color) = 0;
+	int		j = -1;
+	while (++j < 2)
 	{
-		num += shepe[i][0].intersect(shepe[i][0].data, vray, wind->cam->pos, &p);
+		i = -1;
+		p.t = -1;
+		num = 0;
+		while (shepe[++i])
+		{
+			num += shepe[i][0].intersect(shepe[i][0].data, vray, wind->cam->pos, &p);
+		}
+		if (num)
+		{
+			color = shading(wind->scn->lit, &color, p, shepe);
+			get_vector();
+		}
+		else
+		{
+			*((unsigned int *)&color) = skybox_mapping(vray, wind->skybox);
+			break;
+		}
 	}
-	if (num)
-		shading(wind->scn->lit, &color, p, shepe);
-	else
-		*((unsigned int *)&color) = skybox_mapping(vray, wind->skybox);
 	return (*(unsigned int *)&color);
 }
 

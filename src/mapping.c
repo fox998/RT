@@ -32,8 +32,8 @@ void		plane_cord(double *center, double *point, double *u, double *v, double *n)
 	get_vector(&vec, point, -1, center);
 	to_new_basis(w, r, n, vec);
 	//printf("plane cord %f %f %f\n", vec[0], vec[1], vec[2]);
-	*u = fabs(vec[0])/10 - (int)fabs(vec[0])/ 10;
-	*v = fabs(vec[1])/10 - (int)fabs(vec[1])/ 10;
+	*u = (vec[0])/10 - (int)(vec[0])/ 10;
+	*v = (vec[1])/10 - (int)(vec[1])/ 10;
 }
 
 void		box_cord(double *center, double *point, double *u, double *v)
@@ -112,7 +112,7 @@ void		cylinder_cord(double *center, double *point, double *u, double *v, int h, 
 
 	//get_vector(&d, point, -1, center);
 	get_vector(&d2, point, -1, center);
-	h2 = fabs(dot_product(dir, d2));
+	h2 = dot_product(dir, d2);
 	get_vector(&d2, center, dot_product(dir, d2), dir);
 	get_vector(&d, point, -1, d2);
 	norm_vector(&d);
@@ -144,8 +144,8 @@ unsigned int		texture_mapping(void *intersect_param, double *center, double *poi
 		plane_cord(center, point, &u, &v, dir);
 	else
 		box_cord(center, point, &u, &v);
-	x = u * t->w;
-	y = v * t->h;
+	x = (u >= 0 ? u : 1.0 + u) * t->w;
+	y = (v >= 0 ? v : 1.0 + v) * t->h;
 	ptr = t->pixels;
 	p->txr_cord = y * t->w + x;
 	return ptr[p->txr_cord];
