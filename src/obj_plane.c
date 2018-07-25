@@ -30,7 +30,7 @@ int			plane_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	get_vector(&ep, plane->plane_point, -1, e);
 	t = dot_product(ep, plane->n) / vn;
 	get_vector(&i_p, e, t, ray);
-	if (t <= 0.01 || (p && p->t > 0 && p->t <= t))
+	if (t <= 0.00001 || (p && p->t > 0 && p->t <= t))
 		return (0);
 	if (!p)
 		return (1);

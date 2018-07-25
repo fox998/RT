@@ -32,7 +32,7 @@ double              my_rand2(int x, int y, int z)
     return ( 1.0 - ( (n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
 }
 
-
+//p->color = turbulence(p->i_point[0] * 10, p->i_point[1] * 10, p->i_point[2] * 10, 1 << 3);
 double turbulence(double x, double y, double z, double size)
 {
   double value = 0.0, initialSize = size;

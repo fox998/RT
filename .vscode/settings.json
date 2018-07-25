@@ -4,6 +4,7 @@
 		"stdio.h": "c",
 		"function.h": "c",
 		"struct.h": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"limits": "c"
 	}
 }

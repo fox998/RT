@@ -144,8 +144,8 @@ unsigned int		texture_mapping(void *intersect_param, double *center, double *poi
 		plane_cord(center, point, &u, &v, dir);
 	else
 		box_cord(center, point, &u, &v);
-	x = (u >= 0 ? u : 1.0 + u) * t->w;
-	y = (v >= 0 ? v : 1.0 + v) * t->h;
+	x = fmin((u >= 0 ? u : 1.0 + u) * t->w, t->w - 1);
+	y = fmin((v >= 0 ? v : 1.0 + v) * t->h, t->h - 1);
 	ptr = t->pixels;
 	p->txr_cord = y * t->w + x;
 	return ptr[p->txr_cord];
