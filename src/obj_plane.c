@@ -39,7 +39,7 @@ int			plane_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	get_vector(&p->v, e, -1, p->i_point);
 	norm_vector(&p->v);
 	p->t = t;
-	p->color = texture_mapping(p, plane->plane_point, p->i_point, PLANE_CORD, plane->n);
+	p->color =  texture_mapping(p, plane->plane_point, p->i_point, PLANE_CORD, plane->n);
 	return (1);
 }
 

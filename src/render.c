@@ -28,40 +28,40 @@ static void				get_rey(t_cam *cam, t_dvec3 *ray, double *c_cor)
 
 
 static void				dop(t_obj_3d *shepe,
-						t_shading *s, t_iparam p, t_light *lights)
+						t_shading *s, t_iparam *p, t_light *lights)
 {
 	double		tmp;
 
 	if (!shepe)
 	{
-		get_vector(&s->h, lights->dir, 1, p.v);
+		get_vector(&s->h, lights->dir, 1, p->v);
 		norm_vector(&s->h);
-		s->h_dot_n = dot_product(s->h, p.normal);
-		tmp = fmax(0, dot_product(p.normal, lights->dir)) * s->l_intens;
+		s->h_dot_n = dot_product(s->h, p->normal);
+		tmp = fmax(0, dot_product(p->normal, lights->dir)) * s->l_intens;
 		s->lambert += tmp;
 		s->phong += ((tmp <= 0.0 ? 0 : pow(s->h_dot_n, 50.0))) * s->l_intens;
 	}
 }
 
-static unsigned int			shading(t_light *lights, t_iparam p, t_obj_3d **shepe)
+static unsigned int			shading(t_light *lights, t_iparam *p, t_obj_3d **shepe)
 {
 	t_shading	s;
 	int			i;
 	t_color		color;
 
 	//normal_disturbance(&p);
-	color = *(t_color *)&p.color;
+	color = *(t_color *)&p->color;
 	s.a_intens = 0;
 	s.lambert = 0;
 	s.phong = 0;
-	normal_mapping(&p);
+	normal_mapping(p);
 	while (lights)
 	{
 		s.l_intens = lights->intensity;
 		s.a_intens = fmax((0.15) * s.l_intens, s.a_intens);
 		i = 0;
 		while (shepe[i] &&
-		!shepe[i]->intersect(shepe[i]->data, lights->dir, p.i_point, NULL))
+		!shepe[i]->intersect(shepe[i]->data, lights->dir, p->i_point, NULL))
 			i++;
 		dop(shepe[i], &s, p, lights);
 		lights = lights->next;
@@ -85,106 +85,114 @@ unsigned int				mult_color(unsigned int c, double vel)
 
 #include <stdlib.h>
 
-unsigned int				sum_color(unsigned int c1, unsigned int c2)
+unsigned int				sum_color(t_color *color, t_color *c)
 {
-	t_color	*color;
-	t_color	*color2;
-
-	color = (t_color	*)&c1;
-	color2 = (t_color	*)&c2;
-	color->r = (color->r + color2->r > (unsigned int)0xFF ? 0xFF : color->r + color2->r);
-	color->g = (color->g + color2->g > (unsigned int)0xFF ? 0xFF : color->g + color2->g);
-	color->b = (color->b + color2->b > (unsigned int)0xFF ? 0xFF : color->b + color2->b);	
-	return (*((unsigned int *)&color));
+	color->r = fmin(0xFF, color->r + c->r);
+	color->g = fmin(0xFF, color->g + c->g);
+	color->b = fmin(0xFF, color->b + c->b);
+	return (*(unsigned int *)color);
 }
-
-void					get_new_rey(t_dvec3 *e, t_dvec3 *ray, t_iparam *p)
-{
-	get_vector(e, p->i_point, 0, p->i_point);
-	get_vector(ray, *ray, -2.0 * dot_product(*ray, p->normal), p->normal);
-	norm_vector(ray);
-}
-
 
 typedef struct		s_stec_element
 {
 	t_dvec3			point;
 	t_dvec3			refr;
 	t_dvec3			refl;
+}					t_steck_el;
+
+#define				STECK_MAX_SIZE	2
+
+typedef struct		s_stec
+{
+	t_steck_el			elm[STECK_MAX_SIZE];
+	int					begin;
+	int					end;
 }					t_steck;
 
 
-void				pop(t_steck *steck, t_steck		*s, int		*size)
+void				pop(t_steck *steck, t_steck_el		*elm)
 {
-	int		i = *size - 1;
-	get_vector(&s->point, steck[i].point, 0, s->point);
-	get_vector(&s->refr, steck[i].refr, 0, s->refr);
-	get_vector(&s->refl, steck[i].refl, 0, s->refl);
-	(*size)--;
-}
-
-void				push(t_steck *steck, t_steck		*s, int		*size)
-{
+	int		size = steck->end % STECK_MAX_SIZE - steck->begin % STECK_MAX_SIZE + 1;
 	int		i;
 
-	if ((*size)++ < 11)
+	if (size > 0) 
 	{
-		i = *size - 1;
-		get_vector(&steck[i].point, s->point, 0, s->point);
-		get_vector(&steck[i].refr, s->refr, 0, s->refr);
-		get_vector(&steck[i].refl, s->refl, 0, s->refl);
+		i = steck->begin % STECK_MAX_SIZE;
+		get_vector(&elm->point, steck->elm[i].point, 0, elm->point);
+		get_vector(&elm->refr, steck->elm[i].refr, 0, elm->refr);
+		get_vector(&elm->refl, steck->elm[i].refl, 0, elm->refl);
+		steck->begin++;
 	}
+}
+
+void				push(t_steck *steck, t_steck_el		*elm)
+{
+	int		size = steck->end % STECK_MAX_SIZE - steck->begin % STECK_MAX_SIZE;
+	int		i;
+	
+	if (size < 10) 
+	{
+		steck->end++;
+		i = steck->end % STECK_MAX_SIZE;
+		get_vector(&steck->elm[i].point, elm->point, 0, elm->point);
+		get_vector(&steck->elm[i].refr, elm->refr, 0, elm->refr);
+		get_vector(&steck->elm[i].refl, elm->refl, 0, elm->refl);
+	}
+}
+
+void					get_new_rey(t_steck_el *elm, t_iparam *p)
+{
+	get_vector(&elm->point, p->i_point, 0, p->i_point);
+	get_vector(&elm->refl, elm->refl, -2.0 * dot_product(elm->refl, p->normal), p->normal);
+	norm_vector(&elm->refl);
 }
 
 static unsigned int		get_pixel_color(t_window *wind,
 						double *cam_cor, t_obj_3d **shepe)
 {
-	t_dvec3		vray;
 	t_iparam	p;
 	t_color		color;
 	int			i;
 	int			num;
 
-	t_steck		steck[10];
-	int			size = 0;
+	t_steck		steck;
+	steck.begin = 0;
+	steck.end = -1;
 
-	t_dvec3		e;
+	t_steck_el	elm;
 
-
-	get_rey(wind->cam, &vray, (double *)cam_cor);
-	norm_vector(&vray);
+	get_rey(wind->cam, &elm.refl, (double *)cam_cor);
+	norm_vector(&elm.refl);
 	p.txr = wind->txr;
 	p.nrml_txr = wind->nrml_txr;
 	*((unsigned int *)&color) = 0;
 	int		j = -1;
-	get_vector(&e, wind->cam->pos, 0, wind->cam->pos);
-	while (++j < 2)
+	get_vector(&elm.point, wind->cam->pos, 0, wind->cam->pos);
+	while (++j < 1)
 	{
 		i = -1;
 		p.t = -1;
 		num = 0;
 		while (shepe[++i])
 		{
-			num += shepe[i]->intersect(shepe[i]->data, vray, e, &p);
+			num += shepe[i]->intersect(shepe[i]->data, elm.refl, elm.point, &p);
 		}
 		if (num)
 		{
 			t_color		c;
-			*((unsigned int *)&c) = shading(wind->scn->lit, p, shepe);
-			color.r = fmin(0xFF, color.r + c.r);
-			color.g = fmin(0xFF, color.g + c.g);
-			color.b = fmin(0xFF, color.b + c.b);
-			get_new_rey(&e, &vray, &p);
+			*((unsigned int *)&c) = shading(wind->scn->lit, &p, shepe);
+			sum_color(&color, &c);
+			get_new_rey(&elm, &p);
+			push(&steck, &elm);
 		}
 		else
 		{
 			t_color c;
-			*((unsigned int *)&c) = skybox_mapping(vray, wind->skybox);
-			color.r = fmin(0xFF, color.r + c.r);
-			color.g = fmin(0xFF, color.g + c.g);
-			color.b = fmin(0xFF, color.b + c.b);
+			*((unsigned int *)&c) = skybox_mapping(elm.refl, wind->skybox);
+			sum_color(&color, &c);
 			break;
 		}
+		pop(&steck, &elm);
 	}
 	return (*(unsigned int *)&color);
 }

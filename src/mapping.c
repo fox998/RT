@@ -250,19 +250,21 @@ void      normal_mapping(void *intersect_param)
 	t_iparam	*p;
 
 	p = intersect_param;
+	norm_vector(&p->normal);
 	r[0] = p->normal[0];
-	r[1] = p->normal[1] - 0.0001;
-	r[2] = p->normal[2] - 0.0002;
+	r[1] = p->normal[1] - 0.001;
+	r[2] = p->normal[2] - 0.001;
 	norm_vector(&r);
-	vector_product(&w, p->normal, r);
+	//printf("my %f %f %f \ntxr %f %f %f\n",r[0], r[1], r[2], p->normal[0], p->normal[1], p->normal[2]);
+	vector_product(&w, r, p->normal);
 	norm_vector(&w);
-	vector_product(&r, w, p->normal);
+	vector_product(&r, p->normal, w);
 	norm_vector(&r);
 	//printf("my %f %f %f \n", r[0], r[1], r[2]);
 	txr = p->nrml_txr;
 	rgb_n =	((t_color *)txr->pixels)[p->txr_cord];
-	new_n[0] = rgb_n.r - 128;
-	new_n[1] = rgb_n.g - 128;
+	new_n[0] = rgb_n.r - 126;
+	new_n[1] = rgb_n.g - 126;
 	new_n[2] = rgb_n.b;
 	norm_vector(&new_n);
 	to_new_basis(r, w, p->normal, new_n);

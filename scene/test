@@ -1,6 +1,6 @@
 camera
 {
-	pos => 0, -28, 3
+	pos => 0, -28, 0
 	dir => 0, 1, 0
 }
 
@@ -8,19 +8,19 @@ sphere
 {
 	pos => -2, -3 , 1
 	r => 3
-	color => 000099
+	color => 999999
 }
 
 plane
 {
-	dir => 0, 0, -1
-	pos => 0, 6, 0
-	color => aa10f0
+	dir => 0, 0, 10
+	pos => 0, 0, 0
+	color => 0000ff
 }
 
 light
 {
-	dir => -1, 0, 3
+	dir => 0, -1, 0
 	intensity => 50
 }
 
