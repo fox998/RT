@@ -17,9 +17,9 @@
 ******* VECTOR ****************************************************************
 */
 
-typedef double			t_dvec3[3];
+typedef double			t_dvec3[4];
 
-typedef int				t_ivec3[3];
+typedef int				t_ivec3[4];
 
 /*
 ******* HELP STRUCT ***********************************************************
@@ -104,6 +104,11 @@ typedef	struct			s_cone
 	double			sin_a;
 	double			cos_a;
 }						t_cone;
+
+typedef struct			s_qudric
+{
+	double			prm[10];		// Equation param
+}						t_qudric;
 
 /*
 ******* MANAGERS STRUCT *******************************************************

@@ -34,7 +34,7 @@ int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	if (dsc < 0 ||
 	((t = (-2 * dot_product(ray, ce) - sqrt(fabs(dsc))) / (2 * dxd)) < 1e-6 &&
 	(t = (-2 * dot_product(ray, ce) + sqrt(fabs(dsc))) / (2 * dxd)) < 1e-6) ||
-	(p && p->t <= t && p->t >= 0))
+	(p && p->t >= 0 && p->t <= t ))
 		return (0);
 	if (!p)
 		return (1);
@@ -44,7 +44,7 @@ int			sphere_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 	get_vector(&p->v, e, -1, p->i_point);
 	norm_vector(&p->v);
 	norm_vector(&p->normal);
-	p->color =  s->color;// texture_mapping(p, s->center, p->i_point, CYBE_CORD, 0);
+	p->color =  texture_mapping(p, s->center, p->i_point, CYBE_CORD, 0);
 	return (1);
 }
 

@@ -6,7 +6,7 @@ camera
 
 sphere
 {
-	pos => -2, -3 , 1
+	pos => -2, -3 , 5
 	r => 3
 	color => 999999
 }
@@ -20,7 +20,7 @@ plane
 
 light
 {
-	dir => 0, -1, 0
+	dir => 0, 1, 5
 	intensity => 50
 }
 

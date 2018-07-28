@@ -148,7 +148,7 @@ unsigned int		texture_mapping(void *intersect_param, double *center, double *poi
 	y = fmin((v >= 0 ? v : 1.0 + v) * t->h, t->h - 1);
 	ptr = t->pixels;
 	p->txr_cord = y * t->w + x;
-	return ptr[p->txr_cord];
+	return  ptr[p->txr_cord];
 }
 
 

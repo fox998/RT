@@ -14,8 +14,7 @@
 # define VECTOR_H
 
 # ifndef STRUCT_H
-
-typedef double			t_dvec3[3];
+typedef double			t_dvec3[4];
 # endif
 
 void		norm_vector(t_dvec3 *vec);
