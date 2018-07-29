@@ -25,6 +25,7 @@ void			norm_vector(t_dvec3 *vec)
 	vec[0][0] /= len;
 	vec[0][1] /= len;
 	vec[0][2] /= len;
+	vec[0][3] = 1;
 }
 
 void			vector_product(t_dvec3 *prod, t_dvec3 a, t_dvec3 b)

@@ -30,6 +30,8 @@ static t_read	*arr_init(t_read *arr, int arr_size)
 	arr[4].f = &read_plane;
 	arr[5].name = "cone";
 	arr[5].f = &read_cone;
+	arr[6].name = "qudric";
+	arr[6].f = &read_qudric;
 	arr[arr_size].name = 0;
 	return (arr);
 }
@@ -78,17 +80,19 @@ static int		check_brackets(t_read *obj, int fd, t_window *wind)
 	return (0);
 }
 
+#include	<stdio.h>
+
 void			read_scene(char *path, void *wind)
 {
 	int		fd;
 	char	*line;
 	int		i;
 	int		l;
-	t_read	arr[7];
+	t_read	arr[8];
 
 	if ((fd = open(path, O_RDONLY)) < 0)
 		usage('f');
-	arr_init((t_read *)arr, 6);
+	arr_init((t_read *)arr, 7);
 	((t_window *)wind)->scn->lit = 0;
 	((t_window *)wind)->cam = 0;
 	while ((l = num_line(fd, &line)) > 0)

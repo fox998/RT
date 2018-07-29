@@ -18,9 +18,13 @@ plane
 	color => 0000ff
 }
 
+qudric
+{
+}
+
 light
 {
-	dir => 0, 1, 5
+	dir => 5, 0, 3
 	intensity => 50
 }
 

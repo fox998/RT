@@ -54,7 +54,7 @@ static unsigned int			shading(t_light *lights, t_iparam *p, t_obj_3d **shepe)
 	s.a_intens = 0;
 	s.lambert = 0;
 	s.phong = 0;
-	normal_mapping(p);
+	//normal_mapping(p);
 	while (lights)
 	{
 		s.l_intens = lights->intensity;
@@ -168,7 +168,7 @@ static unsigned int		get_pixel_color(t_window *wind,
 	*((unsigned int *)&color) = 0;
 	int		j = -1;
 	get_vector(&elm.point, wind->cam->pos, 0, wind->cam->pos);
-	while (++j < 2)
+	while (++j < 1)
 	{
 		i = -1;
 		p.t = -1;

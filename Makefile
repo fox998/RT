@@ -31,12 +31,13 @@ SRC :=	main.c\
 		obj_plane.c\
 		obj_cylinder.c\
 		obj_cone.c\
+		obj_qudric.c\
 		mapping.c\
 		disturbance.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
-OBJ_FLAG = 
+OBJ_FLAG = -g
 #-Wextra -Werror -Wall
 
 INCLUDES	:=

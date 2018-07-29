@@ -107,7 +107,7 @@ typedef	struct			s_cone
 
 typedef struct			s_qudric
 {
-	double			prm[10];		// Equation param
+	double			*prm;		// Equation param
 }						t_qudric;
 
 /*
