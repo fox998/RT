@@ -9,17 +9,17 @@ int      quadratic_equation(double a, double b, double c, double *t)
 {
     double      dscr;
 
-    if ((dscr = b * b - 4 * a * c) < 0)
+    if ((dscr = (b * b - 4 * a * c)) < 0.0)
         return 0;
-    else if (dscr == 0)
+    else if (dscr == 0.0)
         *t = -b / (a + a);
     else
     {
-        dscr = sqrt(dscr);
-        *t = (-b - dscr) / (a + a);
-        *t < 1e-6 ? (*t = (-b + dscr) / (a + a)) : 0;
+        dscr = sqrt(fabs(dscr));
+        *t = (-b - dscr) / (2.0 * a);
+        *t < 0 ? (*t = (-b + dscr) / (2.0 * a)) : 0.0;
     }
-    return (*t > 1e-6);
+    return (*t > 0 ? 1 : 0);
 }
 
 void    mtx_mult_vtr_4d(double  matrix[4][4], double   *vec, double *res)
@@ -49,23 +49,23 @@ int			qudric_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
 {
     double		t;
     double      mtx[4][4];
-    double    q[10];
+    double      q[10];
     t_obj_3d	*obj;
 
     obj = data;
     //q = obj->data;
-    q[0] = 5;
-    q[1] = 0;
-    q[2] = 0;
-    q[3] = 0;
+    q[0] = 5; //a
+    q[1] = 0; //B
+    q[2] = 0; //c
+    q[3] = 0; //D
 
-    q[4] = 5;
-    q[5] = 0;
-    q[6] = 0;
+    q[4] = 5; //e
+    q[5] = 0; //f
+    q[6] = 0; //g
 
-    q[7] = 0;
-    q[8] = 1;
-    q[9] = 0;
+    q[7] = 0;//h
+    q[8] = -1; //i
+    q[9] = 0; //j
     //printf("intr %p\n", q);
     mtx[0][0] = q[0];
     mtx[0][1] = q[1];
@@ -91,13 +91,14 @@ int			qudric_intersect(void *data, t_dvec3 ray, t_dvec3 e, t_iparam *p)
     
     double      tmp[4];
     double      tmp2[4];
-    tmp[3] = 1;
-    tmp2[3] = 1;
-    ray[3] = 1;
-    e[3] = 1;
+    tmp[3] = 1.0;
+    tmp2[3] = 1.0;
+    ray[3] = 1.0;
+    e[3] = 1.0;
     mtx_mult_vtr_4d(mtx, ray, tmp);
     mtx_mult_vtr_4d(mtx, e, tmp2);
-    if (!quadratic_equation(dot_prod_4d(tmp, ray), 2 * dot_prod_4d(tmp, e), dot_prod_4d(tmp2, e), &t) ||
+    t  = 0;
+    if (!quadratic_equation(dot_prod_4d(tmp, ray), 2 * dot_prod_4d(tmp2, ray), dot_prod_4d(tmp2, e), &t) ||
         (p && p->t >= 0 && p->t <= t))
         return (0);
     if (p)

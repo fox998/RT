@@ -168,7 +168,7 @@ static unsigned int		get_pixel_color(t_window *wind,
 	*((unsigned int *)&color) = 0;
 	int		j = -1;
 	get_vector(&elm.point, wind->cam->pos, 0, wind->cam->pos);
-	while (++j < 1)
+	while (++j < 2)
 	{
 		i = -1;
 		p.t = -1;

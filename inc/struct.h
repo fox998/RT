@@ -110,6 +110,15 @@ typedef struct			s_qudric
 	double			*prm;		// Equation param
 }						t_qudric;
 
+typedef struct			s_tore
+{
+	t_dvec3			dir;
+	t_dvec3			pos;
+	unsigned int	color;
+	unsigned int	R;
+	unsigned int	r;
+}						t_tore;
+
 /*
 ******* MANAGERS STRUCT *******************************************************
 */
