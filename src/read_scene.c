@@ -32,6 +32,8 @@ static t_read	*arr_init(t_read *arr, int arr_size)
 	arr[5].f = &read_cone;
 	arr[6].name = "qudric";
 	arr[6].f = &read_qudric;
+	arr[7].name = "tore";
+	arr[7].f = &read_tore;
 	arr[arr_size].name = 0;
 	return (arr);
 }
@@ -88,11 +90,11 @@ void			read_scene(char *path, void *wind)
 	char	*line;
 	int		i;
 	int		l;
-	t_read	arr[8];
+	t_read	arr[9];
 
 	if ((fd = open(path, O_RDONLY)) < 0)
 		usage('f');
-	arr_init((t_read *)arr, 7);
+	arr_init((t_read *)arr, 8);
 	((t_window *)wind)->scn->lit = 0;
 	((t_window *)wind)->cam = 0;
 	while ((l = num_line(fd, &line)) > 0)

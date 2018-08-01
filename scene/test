@@ -18,8 +18,13 @@ plane
 	color => 0000ff
 }
 
-qudric
+tore
 {
+	pos => 0, 0, 1
+	dir => 0, 0, 10
+	color => 0000ff
+	R => 5
+	r => 2
 }
 
 light

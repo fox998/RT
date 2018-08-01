@@ -32,6 +32,7 @@ SRC :=	main.c\
 		obj_cylinder.c\
 		obj_cone.c\
 		obj_qudric.c\
+		obj_tore.c\
 		mapping.c\
 		disturbance.c
 

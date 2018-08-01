@@ -47,6 +47,7 @@ void		*read_plane(int fd);
 void		*read_cylinder(int fd);
 void		*read_cone(int fd);
 void		*read_qudric(int fd);
+void		*read_tore(int fd);
 void		read_scene(char *path, void *wind);
 void		get_scene(void *wind);
 int			ft_atoi_base(const char *str, int str_base);
