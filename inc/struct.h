@@ -112,8 +112,8 @@ typedef struct			s_qudric
 
 typedef struct			s_tore
 {
-	t_dvec3			dir;
-	t_dvec3			pos;
+	double			dir[4];
+	double			pos[4];
 	unsigned int	color;
 	unsigned int	R;
 	unsigned int	r;

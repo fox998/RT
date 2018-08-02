@@ -34,7 +34,8 @@ SRC :=	main.c\
 		obj_qudric.c\
 		obj_tore.c\
 		mapping.c\
-		disturbance.c
+		disturbance.c\
+		roots3and4.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 

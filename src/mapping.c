@@ -99,8 +99,10 @@ void		box_cord(double *center, double *point, double *u, double *v)
 	*u = -dir[0];
 	*v = dir[1];
 	}
-	*u = 0.5f * (*u / maxAxis + 1.0f);
-	*v = 0.5f * (*v / maxAxis + 1.0f);
+	//*u = 0.5f * (*u / maxAxis + 1.0f);
+	//*v = 0.5f * (*v / maxAxis + 1.0f);
+	*u /= maxAxis;
+	*v /= maxAxis;
 }
 
 void		cylinder_cord(double *center, double *point, double *u, double *v, int h, double *dir )

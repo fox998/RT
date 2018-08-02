@@ -47,7 +47,9 @@ double			dot_product(t_dvec3 a, t_dvec3 b)
 	return (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]);
 }
 
-void			get_vector(t_dvec3 *res_v, t_dvec3 a, double sing, t_dvec3 b)
+#include <stdio.h>
+
+void			get_vector(t_dvec3 *res_v, t_dvec3 a, double sing, double *b)
 {
 	t_dvec3	tmp;
 
@@ -59,7 +61,6 @@ void			get_vector(t_dvec3 *res_v, t_dvec3 a, double sing, t_dvec3 b)
 	res_v[0][2] = tmp[2];
 }
 
-#include <stdio.h>
 
 void			multp_vect_to_matrix(double matrix[3][3], double *vec)
 {
